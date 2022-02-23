@@ -1,0 +1,201 @@
+
+
+.files input {
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  padding: 120px 0px 85px 35%;
+  text-align: center !important;
+  margin: 0;
+  width: 100% !important;
+}
+.files input:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+  -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
+}
+.files{ position:relative}
+.files:after {  pointer-events: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 50px;
+  right: 0;
+  height: 56px;
+  content: "";
+  background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+  display: block;
+  margin: 0 auto;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.color input{ background-color:#f1f1f1;}
+.files:before {
+  position: absolute;
+  bottom: 10px;
+  left: 0;  pointer-events: none;
+  width: 100%;
+  right: 0;
+  height: 57px;
+  content: " or drag it here. ";
+  display: block;
+  margin: 0 auto;
+  color: #2ea591;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.btn44{
+
+  background-color: #a4508b;
+  background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%); 
+  border-radius: 15px;
+   height: 50px;
+   margin-top: 5%;
+   margin-bottom: 10px;
+margin-left: 10px;
+} 
+.chk{
+  padding: 10px;
+  /* left: 33%; */
+  margin-left: 80%;
+}
+
+
+.rd{
+  border-radius: 15%;
+}
+
+.bg{
+background-color: #f0f8ff;
+}
+.card{
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+/* padding: 14px 80px 14px 36px; */
+cursor: pointer;
+}
+
+.card:hover{
+  background-image: linear-gradient(90deg, #a4508b 0%, #5f0a87 74%);
+
+   transform: scale(1.05);
+box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+color: #fff !important;
+}
+.pd{
+  padding-top: 15px;
+}
+.form-inline1{
+  display: flex;
+}
+.wd{
+width: 50%;
+margin: 5px;
+}
+.btn3{
+  width: 100%;
+  background-color: transparent ;
+  border: 1px solid;
+  color: black;
+  height: 50px;
+}
+
+
+
+.align{
+  text-align: center;
+}
+.form1{
+  margin-left: 24%;
+  width: 50%; 
+
+}
+
+.left{
+  /* height: 937px; */
+   background-color: #a4508b;
+  background-image: linear-gradient(90deg, #a4508b 0%, #5f0a87 74%);
+}
+
+          
+
+
+.btn2{
+
+  width: 100%; 
+  background-color: #a4508b;
+  background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%); 
+  border-radius: 15px;
+   height: 50px;
+                  border: none;
+
+} 
+.logo2{
+  display: none;
+
+}
+
+
+.logo{
+  margin: 24%; 
+  max-width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .form1{
+      margin-left: 0%;
+      width: 100%; 
+  
+  }
+
+  .logo2{
+      display: flex;
+      max-width: 40%;
+  margin: 0%;
+  margin-left: 30%;
+  margin-bottom: 5px;
+  }
+
+
+  .left{
+      display: none;
+  }
+}
+@media only screen and (min-width:600px) and (max-width:1368px) {
+  /* For tablets: */
+  .form1{
+      margin-left: 0%;
+      width: 100%; 
+  
+  }
+  .logo{
+      max-width: 80%;
+      margin: 10%;
+      padding-top: 10%;
+  }
+}
+.colora{
+  color: #bfbfbf;
+}
+
+.colorb{
+  color: gray;
+  text-decoration: none;
+}
+.colorc{
+  background-color: #4267B2;
+  margin-left: 5px;
+}
+.colord{
+  background:linear-gradient(-120deg, #4285f4, #34a853, #fbbc05, #ea4335);
+}
+
+.left-top{
+padding-top: 10%;
+}
+.left-top1{
+  padding-top: 2%;
+}

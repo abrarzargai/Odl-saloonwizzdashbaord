@@ -1,0 +1,22 @@
+.ant-menu-item-selected {
+    background-color: #f7d8f354 !important;
+}
+.ant-menu {
+background-image: linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44)) !important;
+font-size: 13px !important;
+font-weight: bold;
+}
+.Saloon
+{
+     margin-top: 10px;
+    font-weight: 400;
+}
+.Wizz
+{   
+    margin-top: -22px;
+    background:'red';
+    font-weight: 900;
+
+
+}
+

@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@600 &display=swap");
+
+ .inputbox {
+    position: relative;
+    height: 50px;
+    margin-bottom: 20px;
+}
+ .inputbox input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 2px solid rgb(124, 21, 119);
+    outline: none;
+    background: none;
+    padding: 10px;
+    font-size: 1.2em;
+}
+
+.inputbox span {
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    font-size: 1em;
+    transition: 0.6s;
+    font-family: sans-serif;
+}
+.inputbox input:focus ~ span,
+.inputbox input:valid ~ span {
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+}
+ .inputbox [type="button"] {
+    width: 50%;
+  
+    border: #fff;
+}
+ .inputbox:hover [type="button"] {
+    background: linear-gradient(45deg, greenyellow, dodgerblue);
+}
+
+/* UPLOAD iMAGE */
+.files input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
+    transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
+    padding-left: 125px;
+    padding-top: 130px;
+    padding-bottom: 30px;
+    text-align: center !important;
+    margin: 0;
+    width: 100% !important;
+}
+.files input:focus {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
+    transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
+    border: 1px solid #92b0b3;
+}
+.files {
+    position: relative
+}
+.files:after {
+    pointer-events: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 56px;
+    content: "";
+    background-image: url('https://image.flaticon.com/icons/png/128/109/109612.png');
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.color input {
+    background-color: #f1f1f1;
+}
+.files:before {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 57px;
+    display: block;
+    margin: 0 auto;
+    color: #2ea591;
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+/* TimePicker */
+.timepickerstyle
+{
+   background:rgba(255, 255, 255, 0);
+   color:rgba(255, 255, 255, 0) !important;
+   border:none;
+   margin-left: -140px;
+    
+}
+.timepickerstyle:focus {
+    background: rgba(255, 255, 255, 0.13);
+    border: none
+}
