@@ -231,6 +231,17 @@ export const Reminder = {
         }
 
     },
+    Add: async (data) => {
+        try {
+            const Response = await axios.post("/api/reminder/add", data)
+            console.log(Response)
+            return true
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
 
+
+    },
 
 };

@@ -15,7 +15,7 @@ function Utilities() {
     const [Data, setData] = useState();
     const { Option } = Select;
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    
+
     //useEffect
     useEffect(() => {
         ApiCall()
@@ -66,12 +66,7 @@ function Utilities() {
         
     }
 
-    const onImageChange = event => {
-        if (event.target.files && event.target.files[0]) {
-            let img = event.target.files[0];
-            setimage(img)
-        }
-    };
+   
 
     return (
         <>
