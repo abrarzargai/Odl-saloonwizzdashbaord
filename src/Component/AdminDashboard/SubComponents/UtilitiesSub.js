@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { message, Button, Modal, Select, Image, Spin } from 'antd';
 import { useForm } from "react-hook-form";
-import { Table, Tag, Space } from 'antd';
+import { Table, Divider, Space } from 'antd';
 import  { DeleteOutlined } from '@ant-design/icons';
 import { DisplayUtilitiesApi } from "../../../Services/Api";
+import axios from 'axios';
 
 function UtilitiesSub(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -42,13 +43,29 @@ function UtilitiesSub(props) {
          })
          if(APIHandler){
                props.ApiCall()
-                    message.success("supplier Delted")
+                    message.success("supplier Deleted")
                 
          }
          else{
               message.error(" supplier already added in the system")
          }
       
+    }
+
+    const DeleteUtility = async (data) => {
+        console.log("delete", data)
+
+        const APIHandler = await DisplayUtilitiesApi.DeleteUtility({
+            Id: props.id})
+        if (APIHandler) {
+            props.ApiCall()
+            message.success("Utility deleted")
+
+        }
+        else {
+            message.error(" supplier already added in the system")
+        }
+
     }
 
 
@@ -77,6 +94,8 @@ const columns = [
             <div class="col-sm-3 " onClick={() => setIsModalVisible(true)}>
                 <div class="card py-4 shadow-lg mb-3 bg-white rounded">
                     <div class="card-body">
+                       
+                        
                         <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
                         <h5 class="card-title">{props.name}</h5>
                     </div>
@@ -99,8 +118,11 @@ const columns = [
                             <div class="col-12  align-items-center justify-content-center">
                                 <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
                                 <h5 class="card-title">{props.name}</h5>
-
+                                <button class='btn btn-outline-danger mb-2 px-4' style={buttondeletestyle} onClick={DeleteUtility} >
+                                  
+                                    Delete {props.name} Utility </button>
                                 {/* Supplier */}
+                                <Divider>Suppliers</Divider>
                                 <div class="col-12 ">
                                     <div >
                                         <Table class="text-center" columns={columns} dataSource={Data} />
@@ -143,6 +165,9 @@ const button2style = {
     borderRadius: '8px',
     border: "none",
     boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
+};
+const buttondeletestyle = {
+  
 };
 
 

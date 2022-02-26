@@ -9,7 +9,7 @@ function ClientDashboard() {
         <Layout>
                 <SideBar/>
                 <Layout>
-                     <Header />
+                     {/* <Header /> */}
                      <MainContent/>
                 </Layout>
         </Layout>

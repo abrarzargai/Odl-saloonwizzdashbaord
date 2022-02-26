@@ -34,8 +34,9 @@ function HeaderComp() {
                             <div className='col-8 col-xs-4 col-xl-10 col-lg-8 '>
                                 <div class="form-group px-4 ">
 
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
-                         
+                                    {/* <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
+                          */}
+                          <span></span>
                                 </div>
                             </div>
                     <div className='col-4 col-xl-2 col-xs-8 d-flex justify-content-end align-items-center text-right'>

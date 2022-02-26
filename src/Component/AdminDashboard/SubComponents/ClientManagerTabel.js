@@ -1,20 +1,15 @@
-import React, { useState  , useEffect} from 'react';
-import { Table, Input, Image, Button, Modal, message, Space } from 'antd';
-import { SearchOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons'; 
-import { Menu, Dropdown } from 'antd';  
-import { useForm } from "react-hook-form";
 import { DeleteOutlined } from '@ant-design/icons';
-import { Tag, Divider } from 'antd';
-import axios from 'axios'
+import { Avatar, Divider, Image, message, Modal, Space, Table, Tag } from 'antd';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
 
 
-
-function ClientManagerTabel() {
+function ClientManagerTabel(props) {
+  
     const [DetailModel, setDetailModel] = useState(false);
     const [Details, setDetails] = useState();
-    const [dealsDeatils, setDealDetails] = useState();
+    const [dealsDeatils, setDealDetails] = useState([]);
     const [DealModel, setDealModel] = useState(false);
     const [isBill, setisBill] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -22,33 +17,77 @@ function ClientManagerTabel() {
     const [ myData , setMyData ] = useState([])
     const [ myImage , setMyImage ] = useState('')
     const [ LOAFormimage , setLOAFormimage ] = useState('')
-    const [ Billimage , setbillimage ] = useState('./No')
-    
+    const [ Billimage , setbillimage ] = useState('./No item.png')
+   
 
     useEffect(() => {
-        const getData = async () => {
-            await axios.get('https://odl-saloonwizz-app.herokuapp.com/api/userutilities/getall')
-                .then(function (response) {
-                    // handle success
-                    console.log("response : ", response?.data?.Data);
-                    setMyData(response?.data?.Data)
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log("error : " , error);
-                })
-                .then(function () {
-                    // always executed
-                });
-        }
         getData();
-    },[])
+    },[props.Utilities])
+
+
+    const getData = async () => {
+        await axios.get('https://odl-saloonwizz-app.herokuapp.com/api/userutilities/getall')
+            .then(function (response) {
+                // handle success
+                let ArrayData = []
+                if (props.Utilities === 'All')
+                { 
+                    setMyData(response?.data?.Data)
+                }else{
+                response?.data?.Data.map((X)=>{
+                    if (X.Utilities.Title == props.Utilities){
+                        ArrayData.push(X)
+                    }
+                })
+                    setMyData(ArrayData)
+                }
+            })
+            .catch(function (error) {
+                // handle error
+              
+            })
+            .then(function () {
+                // always executed
+            });
+    }
 
 
     const onSubmit = async (data) => {
-        console.log(data)
-        message.success("New Deal added")
+        console.log(Details._id, data.Title, data.Description)
+        try {
+            const response = await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/Userutilities/AddDeal',{
+                Id: Details._id,
+                Title: data.Title,
+                Description: data.Description
+            })
+           await getData();
+            setDealModel(false);
+            message.success("New Deal added")
+           
+        } catch (error) {
+            message.error("You already sent the deal with this name to user")
+        }
+       
     }
+
+    const DeleteDeal = async (data) => {
+        console.log(Details._id,data)
+        try {
+            const response = await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/Userutilities/DeleteDeal', {
+                Id: Details._id,
+                Title: data.Title
+            })
+            await getData();
+            setDealModel(false);
+            message.success("Deal Deleted successfully")
+
+        } catch (error) {
+            message.error("server Down")
+        }
+
+    }
+
+
 
     const columns = [
         {
@@ -75,14 +114,31 @@ function ClientManagerTabel() {
         {
             title: 'ExpirationDate',
             dataIndex: 'ContractExpiryDate',
-            //sorter: (a, b) => a.address.length - b.address.length,
-            render: (item) => item,
+            sorter: (a, b) => a - b,
+            render: (item) => {              
+                let date = new Date(item)            
+                var newdate = new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth() + 1,
+                    new Date().getDate()
+                );
+                if (newdate.toISOString() > date.toISOString()){
+                  
+                    return (<h6 className="text-success">{`${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`}</h6>)
+                } else {
+                    return (<h6 className="text-danger">{`${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`}</h6>)
+                }
+            }
         },
         {
-            title: 'LastBillPaid',
+            title: 'LastBillPaid',  
             dataIndex: 'IsPaid',
+            // sorter: {
+            //     compare: (a, b) => a - b,
+            //     multiple: 2,
+            // },
             render: (t, r) => {
-                console.log("t",t)
+                
                 if(t){
                     return(<h6 className="text-success">Yes</h6>)
                 }else{
@@ -109,8 +165,8 @@ function ClientManagerTabel() {
             render: (text, index) => (
                 <input type="Button" style={button2style} value="View Deals"
                     onClick={() => {
-                        console.log("index",index)
-                        setDealDetails(index.DealList)
+                        setDetails(index)
+                        setDealDetails(index.DealList || [])
                         setDealModel(true)
                     }}
                 />
@@ -136,7 +192,7 @@ function ClientManagerTabel() {
             title: 'Delete',
             key: 'action',
             render: (text, record) => (
-                <Space size="large " className="text-danger" >
+                <Space size="large " className="text-danger" onClick={()=>DeleteDeal(record)}>
                     <DeleteOutlined style={{ fontSize: "20px" }} />
                     Delete
                 </Space>
@@ -146,9 +202,14 @@ function ClientManagerTabel() {
 
     return (
         <>
-           
+           {myData.length?(
             <Table columns={columns} dataSource={myData} className="text-center" />
-
+            ):(
+               <div className="mt-4 text-center">
+                        <img src="/no item.png" width="200" height="200" />
+                        <h6> No Data Found </h6>
+               </div> 
+            )}
             {/* BILL IMAGE     */}
             <Image
                 width={200}
@@ -205,8 +266,28 @@ function ClientManagerTabel() {
                     </div>
                   
                     <div>
+
+                                {/* images */}
+                        <div class=' d-flex justify-content-between align-items-center '>
+                        <div>
+                                <Image
+                                    width={200}
+                                    src={Details?.LOAForm}
+                                />
+                                <p>LOAForm</p>
+                        </div>
+                            <div>
+                                <Image
+                                    width={200}
+                                    src={Details?.LastBill}
+                                />
+                                <p>LastBill</p>
+                            </div>
+                        </div>
+
+                       
                         
-                        <Button type="primary" style={button2style} className="mx-3"
+                        {/* <Button type="primary" style={button2style} className="mx-3"
                 onClick={() => {
                     setMyImage(Details?.LOAForm);
                     setVisible(true)
@@ -219,7 +300,7 @@ function ClientManagerTabel() {
                             setVisible(true)
                             }}>
                             View LastBill
-                        </Button>   
+                        </Button>    */}
                     
                     </div>
                   
@@ -247,11 +328,18 @@ function ClientManagerTabel() {
 
                             <div>
                              <Divider>Accepted Deal</Divider>
-
-                                <p> <Tag color="magenta">{"dealsDeatils?.DealList?.Title"}</Tag>
-                                :  <Tag color="magenta"> {"dealsDeatils?.DealList?.Description"}
-                                </Tag>
-                                </p>
+                                {
+                                        Details?.Deal ? (
+                                            <>
+                                                <h6>{Details?.Deal.Title || ''}</h6>
+                                                <p>{Details?.Deal.Description || ''}</p>
+                                            </>
+                                        ):(
+                                             <Tag color="red" >No Deal Accepted by user yet</Tag>
+                                            
+                                        )
+                                }
+                              
                                
                          </div>
                              <Divider>All Deal</Divider>
@@ -262,7 +350,7 @@ function ClientManagerTabel() {
                                                 </div> */}
                                             {/* Accepted Deal */}
 
-                             {
+                          {
                                
                                  dealsDeatils[0]?(
                                        
@@ -274,17 +362,17 @@ function ClientManagerTabel() {
                                     <h6> No Deal sent yet </h6>
                                 </div>
                                  )
-                             }
+                             }  
 
                                 <form onSubmit={handleSubmit(onSubmit)} >
 
 
                                     <div class="inputbox form-group mt-4">
-                                        <input type="text" required="required" class="form-control" {...register("Supplier", { required: true })} />
-                                        <span>Deal</span>
+                                        <input type="text" required="required" class="form-control" {...register("Title", { required: true })} />
+                                        <span>Title</span>
                                     </div>
                                     <div class="inputbox form-group mt-4">
-                                        <input type="text" required="required" class="form-control" {...register("Supplier", { required: true })} />
+                                        <input type="text" required="required" class="form-control" {...register("Description", { required: true })} />
                                         <span>Description</span>
                                     </div>
 

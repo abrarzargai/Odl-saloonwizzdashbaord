@@ -33,7 +33,9 @@ function SideBar() {
     const {authSuccess} = useSelector(state => state.AuthReducer);
     const [LogoutModel, setLogoutModel] = useState(false);
     const dispatch = useDispatch();
+    const [theArray, setTheArray] = useState([]);
 
+    
     const showModal = () => {
         setLogoutModel(true);
     };
@@ -45,9 +47,10 @@ function SideBar() {
             //e.preventDefault()
             localStorage.removeItem("profile");
             if (authSuccess === false) {
-                navigate('/signin')
-                setLogoutModel(false);
                 message.success("Logout")
+                setLogoutModel(false);
+                 navigate('/signin')
+                
             }
         // }
         // getLogout();

@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Menu, Dropdown } from 'antd';
 import {
     EllipsisOutlined
 } from '@ant-design/icons';
+import { useForm } from "react-hook-form";
 
 function Settings() {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [User, SetUser] = useState({});
+
+    useEffect(() => {
+        const response = JSON.parse(localStorage.getItem('profile'))
+        console.log(response)
+        SetUser(response)
+
+    },[])
+    async function onSubmit(data) {
+        console.log("Data",data)
+    }
     return (
         <>
             
@@ -28,11 +41,11 @@ function Settings() {
                         </div>
                         <form className="bg-light py-5 px-3 ">
                             <div class="inputbox form-group my-4">
-                                <input type="text" required="required"  value="first Name" class="form-control" readonly />
+                                <input type="text" required="required" value={User.FirstName} class="form-control" readonly />
                                 <span>FirstName</span>
                             </div>
                             <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="last Name" class="form-control" readonly />
+                                <input type="text" required="required" value={User.LastName} class="form-control" readonly />
                                 <span>LastName</span>
                             </div>
                             <div class="inputbox form-group my-4">
@@ -40,7 +53,7 @@ function Settings() {
                                 <span>Date Of Birth</span>
                             </div>
                             <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Business" class="form-control" readonly />
+                                <input type="text" required="required" value={User.BusinessName} class="form-control" readonly />
                                 <span>Business Name</span>
                             </div>
                             <div class="inputbox form-group my-4">
@@ -48,7 +61,7 @@ function Settings() {
                                 <span>City</span>
                             </div>
                             <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Office Address" class="form-control" readonly />
+                                <input type="text" required="required" value={User.BusinessAddress} class="form-control" readonly />
                                 <span>Office Address</span>
                             </div>
                             <div class="inputbox form-group my-4">
@@ -60,41 +73,38 @@ function Settings() {
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
-                        <h3 className="text-center">Contact</h3>
-                        
-                        <form className="bg-light py-5 px-3 ">
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="first Name" class="form-control" readonly />
-                                <span>Email Address</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="+1 987 654 321" class="form-control" readonly />
-                                <span>Phone</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Facebook/yourName" class="form-control" readonly />
-                                <span>Facebook</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Instagram/yourname" class="form-control" readonly />
-                                <span>Instagram</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Linkdin/YourName" class="form-control" readonly />
-                                <span>Linkdin</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Twitter/yourName" class="form-control" readonly />
-                                <span>Twitter</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <button type="text" required="required" value="last Name" class="form-control"  >
-                                    Add New Link
-                                </button>
-                            </div>
-                            
-
-                        </form>
+                        <h3 className="text-center">Profile</h3>
+                        <form onSubmit={handleSubmit(onSubmit)} className="bg-light py-5 px-3 ">  
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value={User.FirstName} {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>FirstName</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value={User.LastName} {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>LastName</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="Date" required="required" value="2013-01-08" {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>Date Of Birth</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value={User.BusinessName} {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>Business Name</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value="Demo City" {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>City</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value={User.BusinessAddress} {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>Office Address</span>
+                        </div>
+                        <div class="inputbox form-group my-4">
+                                <input type="text" required="required" value="Demo Supplier Name" {...register("OldPassword", { required: true })} class="form-control"  />
+                            <span>Supplier Name </span>
+                        </div>
+                            <input type="submit" style={buttonstyle} value="Update Password" />
+                    </form>
                     </div>
                 </div>
             </div>
@@ -119,3 +129,10 @@ const dropdownmenu = (
 
     </Menu>
 );
+
+const buttonstyle = {
+    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
+    color: 'white',
+    padding: "5px 35px",
+    borderRadius: '8px',
+};

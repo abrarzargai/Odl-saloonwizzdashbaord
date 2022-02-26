@@ -33,16 +33,19 @@ function Utilities() {
             if(GETUtilitiesHandler){
                 console.log("GETUtilitiesHandler",GETUtilitiesHandler)
                 setTheArray(GETUtilitiesHandler)
+                setloading(false)
        
             }
             else{
                 console.log("check")
                 setTheArrayCheck(false)
+                setloading(false)
             }
               
         } catch (error) {
                 console.log("Server Error :",error)
                 message.error("Server is Down")
+              setloading(false)
         }
 
         }
@@ -87,13 +90,13 @@ function Utilities() {
         <>
             {loading ? (
                 <div class="text-center">
-                <Spin className="SpinClass" />
+                <Spin className="SpinClass" size="large" />
                 </div>
             ) : (
                 <>
                     <div class=" d-flex justify-content-between align-items-center px-3">
 
-                        <h2>   Utilities {theArray.length } </h2>
+                        <h2>   Utilities  </h2>
                         <div>
                             <Button
                                 style={buttonstyle}

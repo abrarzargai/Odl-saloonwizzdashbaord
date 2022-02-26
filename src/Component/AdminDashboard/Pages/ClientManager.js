@@ -1,14 +1,49 @@
-import React, { useState } from 'react';
+import { Button, message, Spin } from 'antd';
+import { useEffect, useState } from 'react';
+import { DisplayUtilitiesApi } from "../../../Services/Api";
 import ClientManagerTabel from '../SubComponents/ClientManagerTabel';
-import { Table, Input, Image, Button, Modal, message } from 'antd';
 
 function ClientManager() {
     const [visible, setVisible] = useState(false);
     const [Utilities, setUtilities] = useState("All");
+    const [theArray, setTheArray] = useState([]);
+    const [theArrayCheck, setTheArrayCheck] = useState(true);
+    const [loading, setloading] = useState(true);
 
+    useEffect(() => {
+        UtilitiesFunction();
+        setloading(false)
+    }, [])
+
+    const UtilitiesFunction = async () => {
+
+        try {
+            const GETUtilitiesHandler = await DisplayUtilitiesApi.GetAll()
+            console.log("GETUtilitiesHandler", GETUtilitiesHandler)
+            if (GETUtilitiesHandler) {
+                console.log("GETUtilitiesHandler", GETUtilitiesHandler)
+                let x =['All']
+                GETUtilitiesHandler.map((data)=>{
+                    x.push(data.Title)
+                })
+                setTheArray(x)
+                
+            }
+            else {
+                console.log("check")
+                setTheArrayCheck(false)
+            }
+
+        } catch (error) {
+            console.log("Server Error :", error)
+            message.error("Server is Down")
+        }
+
+    }
 
     return (
         <>
+        
            <div className="mb-4">
                
                 <Button type="primary" style={button2style} className="mx-3"
@@ -26,7 +61,7 @@ function ClientManager() {
                     visible?(
                         <div className="mb-4 mt-3 py-4 px-4 bg-white" style={stylebox}>
                             {
-                                UtiltiesList.map((x)=>{
+                                theArray.map((x)=>{
                                     console.log("x==>",x)
                                     return(
                                         <Button type="primary" className="mx-1 my-2"
@@ -52,7 +87,8 @@ function ClientManager() {
                 }
           </div>
           
-           <ClientManagerTabel/>
+            <ClientManagerTabel Utilities={Utilities}/>
+           
         </>
     );
 }
