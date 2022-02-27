@@ -27,7 +27,7 @@ function Settings() {
                         <h3 className="text-center">Personal</h3>
                         <div className="bg-light py-4 mb-1 px-3 d-flex align-items-center justify-content-center" >
                             
-                            <Avatar size={70} className="mx-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068',fontSize:'30px' }}>{User.FirstName[0]}</Avatar>
+                            <Avatar size={50} className="mx-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068',fontSize:'30px' }}>{User.FirstName[0]}</Avatar>
                             <h6 class='ml-2' >
                                 <p className="pt-5">Update Avatar</p>
                                 <p style={{marginTop:"-15px"}}>or Import from Facebook or Instagram</p>
@@ -62,7 +62,7 @@ function Settings() {
                             <span>LastName</span>
                         </div>
                         <div class="inputbox form-group my-4">
-                                <input type="Date" required="required" value="02-" {...register("OldPassword", { required: true })} class="form-control"  />
+                                <input type="Date" required="required" value="2013-01-08" {...register("OldPassword", { required: true })} class="form-control"  />
                             <span>Date Of Birth</span>
                         </div>
                         <div class="inputbox form-group my-4">

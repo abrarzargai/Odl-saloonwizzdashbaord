@@ -21,7 +21,12 @@ function Utilities() {
     //useEffect
     useEffect( () => {
         ApiCall()
-        setTimeout(setloading(false), 10000);
+        
+        
+        setTimeout(function () {
+            console.log("=>")
+            setloading(false);
+        }, 15000);
         
     }, [])
 
