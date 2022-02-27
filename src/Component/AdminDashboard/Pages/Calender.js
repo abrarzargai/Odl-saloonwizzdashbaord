@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { message, Button, Modal } from 'antd';
+import { Button, Divider, message, Modal } from 'antd';
+import { format } from 'date-fns';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from "react-hook-form";
-import '../../Css/Forms.css'
-import { Tag, Divider } from 'antd';
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { Reminder } from "../../../Services/Api";
-import { compareAsc, format } from 'date-fns'
+import '../../Css/Forms.css';
 
 function Calender() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -15,6 +14,8 @@ function Calender() {
     const [loading, setloading] = useState(true);
     const [theArrayCheck, setTheArrayCheck] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [ReminderModel, setReminderModel] = useState(false);
+    const [ReminderData, setReminderData] = useState(false);
     const localizer = momentLocalizer(moment)
 
     useEffect(() => {
@@ -30,11 +31,14 @@ function Calender() {
             if (GetHandler) {
                 let X = [];
                 GetHandler.map((data) => {
+                    let date = new Date(data.Date)
+                    date.setDate(date.getDate() + 1);
                     X.push({
                         id: data._id,
                         title: data.Title,
-                        start: new Date(data.Date),
-                        end: new Date(data.Date)
+                        Description: data.Description,
+                        start: date,
+                        end: date
                     })
                 })
                 setTheArray(X)
@@ -56,16 +60,12 @@ function Calender() {
     }
 
     const onSubmit = async (data) => {
-    
+        let date = new Date(data.Date)
+        date.setDate(date.getDate() + 1);
 
-        console.log(data.Date.getFullYear(),)
-        console.log({
-            Title: data.Title, Date: format(new Date(data.Date), 'MM/dd/yyyy'), Description: 'Description'
-        })
-      
-     
         const Response = await Reminder.Add({
-            Title: data.Title, Date: format( new Date(data.Date), 'MM/dd/yyyy'), Description:'Description'})
+            Title: data.Title, Date: format(date, 'MM/dd/yyyy'), Description: data.Description
+})
         if (Response){
             ApiCall()
             message.success("Added Successfully")
@@ -73,6 +73,21 @@ function Calender() {
         }else{
             message.error("Server Down...!")
             setIsModalVisible(false);
+        }
+
+    }
+
+    const Delete = async (data) => {
+        console.log("delete function:", data)
+
+        const Response = await Reminder.Delete({Id: data})
+        if (Response) {
+            ApiCall()
+            message.success("Deleted")
+            setReminderModel(false);
+        } else {
+            message.error("Server Down...!")
+            setReminderModel(false);
         }
 
     }
@@ -101,8 +116,16 @@ function Calender() {
                     startAccessor="start"
                     endAccessor="end"
                     style={{ height: 500 }}
+                    popup={true}
+                    onSelectEvent={(e) => { 
+                       setReminderData(e);
+                       setReminderModel(true);
+                        console.log(e);
+                     }}
+                    
                 />
             </div>
+            {/* add reminder model */}
             <Modal visible={isModalVisible} onCancel={() => { setIsModalVisible(false); }}
                 footer={[
                     // <div div className='text-center' >
@@ -125,7 +148,11 @@ function Calender() {
                                         <span>Title</span>
                                     </div>
                                     <div class="inputbox form-group mt-4">
-                                        <input type="datetime-local" required="required" class="form-control" {...register("Date", { required: true })} />
+                                        <input type="text" required="required" class="form-control" {...register("Description", { required: true })} />
+                                        <span>Description</span>
+                                    </div>
+                                    <div class="inputbox form-group mt-4">
+                                        <input type="date" required="required" class="form-control" {...register("Date", { required: true })} />
                                        
                                     </div>
                                     
@@ -142,7 +169,29 @@ function Calender() {
                 {/* Form Ended Here */}
 
             </Modal >
+            {/* view Reminder Model */}
+            <Modal visible={ReminderModel} onCancel={() => { setReminderModel(false); }}
+                footer={[
+                    <div div className='text-center' >
+                        <Button style={button2style} className="mb-2 " onClick={() => Delete(ReminderData.id)}>  Delete Reminder </Button>
+                        <Button style={button2style} className="mb-2 " onClick={() => setReminderModel(false)}>  Cancel </Button>
+                    </div>
+                ]}
+            >
 
+                {/* Form Stated Here */}
+
+
+                <div className=" text-center">
+                    <i class="fa fa-bell text-warning fa-4x mb-3" aria-hidden="true"></i>
+                    <h6>{ReminderData.title || ''}</h6>
+                    <p>{ReminderData.Description || ''}</p>
+                </div>
+
+
+                {/* Form Ended Here */}
+
+            </Modal >
         </>
     );
 }
@@ -161,6 +210,7 @@ const button2style = {
     background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
     color: 'white',
     padding: "10px 35px",
+    paddingBottm:'20px',
     borderRadius: '8px',
     border: "none",
     boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',

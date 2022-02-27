@@ -21,7 +21,8 @@ function Utilities() {
     //useEffect
     useEffect( () => {
         ApiCall()
-        setloading(false)
+        setTimeout(setloading(false), 10000);
+        
     }, [])
 
 

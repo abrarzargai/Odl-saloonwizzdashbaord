@@ -1,8 +1,9 @@
-import { Button, message, Modal, Select, Spin } from 'antd';
+import { Button, message, Modal, Select, Spin, Divider } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { ServicesApi } from "../../../Services/Api";
 import '../../Css/Forms.css';
+import UserServicesSub from '../SubComponents/UserServicesSub';
 import ServicesSub from '../SubComponents/ServicesSub';
 
 
@@ -78,7 +79,7 @@ function Utilities() {
                 <>
                     <div class=" d-flex justify-content-between align-items-center px-3">
 
-                            <h2>   Marketing Services  </h2>
+                            <h2 style={{ color: '#9e1068' }} >   Marketing Services  </h2>
                         <div>
                             <Button
                             
@@ -94,17 +95,22 @@ function Utilities() {
 
 
                             <div class="row">
-                                {
+                                {   
 
                                     theArrayCheck ? (
-
-                                        theArray.map((x) => {
+                                            <>
+                                       { theArray.map((x) => {
                                             return (
                                                
                                                 <ServicesSub id={x._id} Title={x.Title} Duration={x.Duration} Amount={x.Amount} Type={x.Type} Description={x.Description} ApiCall={ApiCall} />
-                                           
+                                                
                                                 )
-                                        })
+                                        })}
+                                        <Divider orientation="center" style={{ color: '#9e1068' }} className='my-2' >Applied Packages</Divider>
+                                                <div className='mt-3'>
+                                            < UserServicesSub />
+                                                </div>
+                                            </>
                                     ) : (
                                         <div className="mt-4 text-center">
                                             <img src="/no item.png" width="200" height="200" />

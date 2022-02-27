@@ -57,10 +57,8 @@ function ServicesSub(props) {
             <div class="col-sm-3 " onClick={() => setIsModalVisible(true)}>
                 <div class="card py-4 shadow-lg mb-3 bg-white rounded">
                     <div class="card-body">
-                        <h5 class="card-title">{props.Title}</h5>
-                        <h5 class="card-title">{props.Duration}</h5>
-                        <h5 class="card-title">{props.Type}</h5>
-                        <h5 class="card-title"> $ {props.Amount}</h5>
+                        <h3 class="card-title" style={{ color: '#9e1068' }} >{props.Title}</h3>
+                        <p class="card-title" style={{ color: '#9e1068' }}> £{props.Amount} per {props.Duration} </p>
                     </div>
                 </div>
             </div>

@@ -187,6 +187,7 @@ export const DigitalAssistanceApi = {
 
 
     },
+
   
 
 };
@@ -235,6 +236,54 @@ export const Reminder = {
         try {
             const Response = await axios.post("/api/reminder/add", data)
             console.log(Response)
+            return true
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+
+    },
+    Delete: async (data) => {
+        try {
+            const Response = await axios.post("/api/reminder/Delete", data)
+            return true
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+
+    },
+
+};
+
+export const UsrServicePackageApi = {
+    GetAll: async () => {
+        try {
+            const Reminders = await axios.get("/api/UserServices/getall")
+            return Reminders.data.Data;
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+    },
+    Add: async (data) => {
+        try {
+            const Response = await axios.post("/api/reminder/add", data)
+            console.log(Response)
+            return true
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+
+    },
+    Update: async (data) => {
+        try {
+            const Response = await axios.post("/api/UserServices/update", data)
             return true
         } catch (error) {
             console.log("API Error :", error)

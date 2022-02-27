@@ -26,8 +26,9 @@ function Settings() {
                     <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
                         <h3 className="text-center">Personal</h3>
                         <div className="bg-light py-4 mb-1 px-3 d-flex align-items-center justify-content-center" >
-                            <Avatar size={100} src="https://joeschmoe.io/api/v1/fr" />
-                            <h6 >
+                            
+                            <Avatar size={70} className="mx-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068',fontSize:'30px' }}>{User.FirstName[0]}</Avatar>
+                            <h6 class='ml-2' >
                                 <p className="pt-5">Update Avatar</p>
                                 <p style={{marginTop:"-15px"}}>or Import from Facebook or Instagram</p>
                             </h6>
@@ -44,30 +45,7 @@ function Settings() {
                                 <input type="text" required="required" value={User.FirstName} class="form-control" readonly />
                                 <span>FirstName</span>
                             </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.LastName} class="form-control" readonly />
-                                <span>LastName</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="Date" required="required" value="2013-01-08" class="form-control" readonly />
-                                <span>Date Of Birth</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.BusinessName} class="form-control" readonly />
-                                <span>Business Name</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo City" class="form-control" readonly />
-                                <span>City</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.BusinessAddress} class="form-control" readonly />
-                                <span>Office Address</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Supplier Name" class="form-control" readonly />
-                                <span>Supplier Name </span>
-                            </div>
+                        
 
                         </form>
                     </div>
@@ -84,7 +62,7 @@ function Settings() {
                             <span>LastName</span>
                         </div>
                         <div class="inputbox form-group my-4">
-                                <input type="Date" required="required" value="2013-01-08" {...register("OldPassword", { required: true })} class="form-control"  />
+                                <input type="Date" required="required" value="02-" {...register("OldPassword", { required: true })} class="form-control"  />
                             <span>Date Of Birth</span>
                         </div>
                         <div class="inputbox form-group my-4">
@@ -103,7 +81,7 @@ function Settings() {
                                 <input type="text" required="required" value="Demo Supplier Name" {...register("OldPassword", { required: true })} class="form-control"  />
                             <span>Supplier Name </span>
                         </div>
-                            <input type="submit" style={buttonstyle} value="Update Password" />
+                            <input type="submit" style={buttonstyle} value="Update" />
                     </form>
                     </div>
                 </div>
