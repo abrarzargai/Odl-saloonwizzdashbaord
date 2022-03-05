@@ -3,7 +3,8 @@ import { Avatar, Divider, Image, message, Modal, Space, Table, Tag } from 'antd'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-
+import * as actions from '../../../Store/Action/DigitalAssistances';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function ClientManagerTabel(props) {
   
@@ -18,7 +19,13 @@ function ClientManagerTabel(props) {
     const [ myImage , setMyImage ] = useState('')
     const [ LOAFormimage , setLOAFormimage ] = useState('')
     const [ Billimage , setbillimage ] = useState('./No item.png')
-   
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.DigitalAssistances }),
+        shallowEqual
+    );
+    const { totalCount, entities, listLoading } = currentState;
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         getData();
@@ -210,7 +217,7 @@ function ClientManagerTabel(props) {
                         <h6> No Data Found </h6>
                </div> 
             )}
-            {/* BILL IMAGE     */}
+            {/* BILL IMAGE    
             <Image
                 width={200}
                 style={{ display: 'none' }}
@@ -389,7 +396,7 @@ function ClientManagerTabel(props) {
 
                 {/* Form Ended Here */}
 
-            </Modal>
+            </Modal> */}
         </>
     );
 }

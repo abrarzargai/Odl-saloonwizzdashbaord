@@ -4,68 +4,34 @@ import { useForm } from "react-hook-form";
 import { Table, Divider, Space } from 'antd';
 import  { DeleteOutlined } from '@ant-design/icons';
 import { DisplayUtilitiesApi } from "../../../Services/Api";
+import * as actions from '../../../Store/Action/Utilities';
 import axios from 'axios';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+
 
 function UtilitiesSub(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-     
+    const dispatch = useDispatch();
+
     var Data = []
        props.Supplier.map((x) => {
        Data.push({ SupplierName:x}) 
          })
 
-
- 
-
-
     const onSubmit = async (data) => {
-        
-         const APIHandler = await DisplayUtilitiesApi.AddSupplierToUtility({
-             Id:props.id,...data
-         })
-         if(APIHandler){
-               props.ApiCall()
-                    message.success("New supplier added")
-                
-         }
-         else{
-              message.error(" supplier already added in the system")
-         }
-      
+        dispatch(actions.AddSupplier({Id: props.id, ...data }));    
     }
 
      const Delete = async (data) => {
         console.log("delete",data)
-
-         const APIHandler = await DisplayUtilitiesApi.DeleteSupplierToUtility({
-             Id:props.id,Supplier:data.SupplierName
-         })
-         if(APIHandler){
-               props.ApiCall()
-                    message.success("supplier Deleted")
-                
-         }
-         else{
-              message.error(" supplier already added in the system")
-         }
-      
+         dispatch(actions.deleteSupplier({ Id: props.id, Supplier: data.SupplierName }));     
     }
 
-    const DeleteUtility = async (data) => {
-        console.log("delete", data)
-
-        const APIHandler = await DisplayUtilitiesApi.DeleteUtility({
-            Id: props.id})
-        if (APIHandler) {
-            props.ApiCall()
-            message.success("Utility deleted")
-
-        }
-        else {
-            message.error(" supplier already added in the system")
-        }
-
+    const DeleteUtility = async () => {
+        console.log("delete", props.id)
+        dispatch(actions.deleteUtilities({ Id: props.id }));
+        setIsModalVisible(false)
     }
 
 

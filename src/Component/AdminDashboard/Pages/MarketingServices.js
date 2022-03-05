@@ -5,6 +5,9 @@ import { ServicesApi } from "../../../Services/Api";
 import '../../Css/Forms.css';
 import UserServicesSub from '../SubComponents/UserServicesSub';
 import ServicesSub from '../SubComponents/ServicesSub';
+// import { useSelector, useDispatch } from "react-redux";
+import * as actions from '../../../Store/Action/MarketingServices';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 
 function Utilities() {
@@ -16,62 +19,32 @@ function Utilities() {
     const [Data, setData] = useState();
     const { Option } = Select;
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.MarketingServices }),
+        shallowEqual
+      );
+      const { totalCount, entities, listLoading } = currentState;
+    const dispatch = useDispatch();
 
-    //useEffect
     useEffect(() => {
-        ApiCall()
-        setloading(false)
+        dispatch(actions.fetchMarketingServices());
+        // ApiCall()
+        // setloading(false)
     }, [])
-
-
-    const ApiCall = async () => {
-
-        try {
-            const GetHandler = await ServicesApi.GetAll()
-            console.log("GetHandler", GetHandler)
-            if (GetHandler) {
-                setTheArray(GetHandler)
-                setloading(false)
-
-            }
-            else {
-                console.log("check")
-                setTheArrayCheck(false)
-                setloading(false)
-            }
-
-        } catch (error) {
-            console.log("Server Error :", error)
-            message.error("Server is Down")
-            setloading(false)
-        }
-
-    }
 
 
 
     const onSubmit = async (data) => {
         console.log(data)
-           
-            try {
-                const Response = await ServicesApi.Add({...data,Type:"MarketingService"})
-                const GETUtilitiesHandler = await ServicesApi.GetAll()
-                setTheArray(GETUtilitiesHandler)
-                setTheArrayCheck(true)
-                message.success("Added Successfully")
-                setIsModalVisible(false);
-            } catch (error) {
-                message.error("Server Down...!")
-                setIsModalVisible(false);
-            }
-        
+        dispatch(actions.createMarketingService({ ...data, Type: "MarketingService" }));
+        setIsModalVisible(false);
     }
 
    
 
     return (
         <>
-            {loading ? (
+            {listLoading ? (
                 <div class="text-center">
                     <Spin className="SpinClass" size="large" />
                 </div>
@@ -97,12 +70,12 @@ function Utilities() {
                             <div class="row">
                                 {   
 
-                                    theArrayCheck ? (
+                                        entities ? (
                                             <>
-                                       { theArray.map((x) => {
+                                                {entities.map((x) => {
                                             return (
                                                
-                                                <ServicesSub id={x._id} Title={x.Title} Duration={x.Duration} Amount={x.Amount} Type={x.Type} Description={x.Description} ApiCall={ApiCall} />
+                                                <ServicesSub id={x._id} Title={x.Title} Duration={x.Duration} Amount={x.Amount} Type={x.Type} Description={x.Description} />
                                                 
                                                 )
                                         })}

@@ -5,49 +5,25 @@ import { Table, Divider, Space } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { ServicesApi } from "../../../Services/Api";
 import axios from 'axios';
+import * as actions from '../../../Store/Action/MarketingServices';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function ServicesSub(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const dispatch = useDispatch();
+    
 
     const onSubmit = async (data) => {
-
-        const APIHandler = await ServicesApi.Update({
-            Id: props.id, ...data
-        })
-        if (APIHandler) {
-          await props.ApiCall()
-            setIsModalVisible(false)
-            message.success("Updated")
-            
-
-        }
-        else {
-
-            message.error(" System Down...!")
-            setIsModalVisible(false)
-        }
-
+        console.log(data, props.id)
+        dispatch(actions.updateMarketingService({ Id: props.id, ...data }));
+        setIsModalVisible(false)
     }
 
 
     const Delete = async (data) => {
-        console.log("delete", data)
-
-        const APIHandler = await ServicesApi.Delete({
-            Id: props.id
-        })
-        if (APIHandler) {
-            props.ApiCall()
-            message.success(" deleted")
-            setIsModalVisible(false)
-
-        }
-        else {
-            message.error(" System Down..!")
-            setIsModalVisible(false)
-        }
-
+        dispatch(actions.deleteMarketingService({ Id: props.id}));
+        setIsModalVisible(false);
     }
 
 

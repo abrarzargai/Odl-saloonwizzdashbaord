@@ -7,7 +7,7 @@ import  '../../Css/FillingSub.css';
 
 
 function FillingSub(props) {
- console.log("props",props)
+
     
 
     return (

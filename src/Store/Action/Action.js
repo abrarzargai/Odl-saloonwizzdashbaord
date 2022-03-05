@@ -1,6 +1,6 @@
 import axios from "axios"
- const URL = "http://localhost:8080";
-// const URL = "https://odl-saloonwizz-app.herokuapp.com/";
+// const URL = "http://localhost:8080";
+ const URL = "https://odl-saloonwizz-app.herokuapp.com/";
 
 //Utilities
 export const DisplayUtilities = {

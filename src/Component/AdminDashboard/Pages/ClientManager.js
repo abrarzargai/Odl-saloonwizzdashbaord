@@ -9,8 +9,10 @@ function ClientManager() {
     const [theArray, setTheArray] = useState([]);
     const [theArrayCheck, setTheArrayCheck] = useState(true);
     const [loading, setloading] = useState(true);
+   
 
     useEffect(() => {
+      
         UtilitiesFunction();
         setloading(false)
     }, [])

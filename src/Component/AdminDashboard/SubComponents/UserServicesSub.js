@@ -1,5 +1,5 @@
 import { EllipsisOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Menu, Space, Table, message } from 'antd';
+import { Avatar, Dropdown, Menu, message, Space, Table } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
@@ -22,7 +22,7 @@ function ClientManagerTabel(props) {
 
     useEffect(() => {
         getData();
-    }, [props.Utilities])
+    }, [])
 
 
     const getData = async () => {

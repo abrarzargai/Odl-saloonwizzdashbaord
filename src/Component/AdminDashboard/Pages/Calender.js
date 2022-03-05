@@ -1,4 +1,4 @@
-import { Button, Divider, message, Modal } from 'antd';
+import { Button, Divider, message, Modal, Spin} from 'antd';
 import { format } from 'date-fns';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -6,7 +6,11 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from "react-hook-form";
 import { Reminder } from "../../../Services/Api";
+import * as actions from '../../../Store/Action/Calenders';
+import { v4 as uuidv4 } from 'uuid';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import '../../Css/Forms.css';
+
 
 function Calender() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -17,79 +21,34 @@ function Calender() {
     const [ReminderModel, setReminderModel] = useState(false);
     const [ReminderData, setReminderData] = useState(false);
     const localizer = momentLocalizer(moment)
-
+     const { currentState } = useSelector(
+        (state) => ({ currentState: state.Calenders }),
+        shallowEqual
+      );
+      const { totalCount, entities, listLoading } = currentState;
+    const dispatch = useDispatch();
     useEffect(() => {
-        ApiCall()
-        setloading(false)
+         dispatch(actions.fetchCalenders());
     }, [])
 
-    const ApiCall = async () => {
-
-        try {
-            const GetHandler = await Reminder.GetAll()
-            console.log("GetHandler", GetHandler)
-            if (GetHandler) {
-                let X = [];
-                GetHandler.map((data) => {
-                    let date = new Date(data.Date)
-                    date.setDate(date.getDate() + 1);
-                    X.push({
-                        id: data._id,
-                        title: data.Title,
-                        Description: data.Description,
-                        start: date,
-                        end: date
-                    })
-                })
-                setTheArray(X)
-                setloading(false)
-
-            }
-            else {
-                console.log("check")
-                setTheArrayCheck(false)
-                setloading(false)
-            }
-
-        } catch (error) {
-            console.log("Server Error :", error)
-            message.error("Server is Down")
-            setloading(false)
-        }
-
-    }
+ 
 
     const onSubmit = async (data) => {
+       
         let date = new Date(data.Date)
         date.setDate(date.getDate() + 1);
-
-        const Response = await Reminder.Add({
-            Title: data.Title, Date: format(date, 'MM/dd/yyyy'), Description: data.Description
-})
-        if (Response){
-            ApiCall()
-            message.success("Added Successfully")
-            setIsModalVisible(false);
-        }else{
-            message.error("Server Down...!")
-            setIsModalVisible(false);
-        }
-
+        dispatch(actions.createCalender
+            ({ Title: data.Title,
+             Date: format(date, 'MM/dd/yyyy'),
+              Description: data.Description, }, dispatch));
+        setIsModalVisible(false);
     }
 
     const Delete = async (data) => {
         console.log("delete function:", data)
-
-        const Response = await Reminder.Delete({Id: data})
-        if (Response) {
-            ApiCall()
-            message.success("Deleted")
-            setReminderModel(false);
-        } else {
-            message.error("Server Down...!")
-            setReminderModel(false);
-        }
-
+        dispatch(actions.deleteCalenders({ Id: data }, dispatch));
+        setReminderModel(false);
+        message.info("Deleted")
     }
 
     
@@ -110,9 +69,14 @@ function Calender() {
                 </div>
             </div>
             <div>
+                {listLoading?(
+                    <div style={{ textAlign: 'center', padding: '100px 0px',color:'red' }}>
+                    <Spin style={{color:'yellow',}}  ></Spin>
+                    </div>
+                ):(
                 <Calendar
                     localizer={localizer}
-                    events={theArray}
+                    events={entities}
                     startAccessor="start"
                     endAccessor="end"
                     style={{ height: 500 }}
@@ -124,6 +88,7 @@ function Calender() {
                      }}
                     
                 />
+                )}
             </div>
             {/* add reminder model */}
             <Modal visible={isModalVisible} onCancel={() => { setIsModalVisible(false); }}

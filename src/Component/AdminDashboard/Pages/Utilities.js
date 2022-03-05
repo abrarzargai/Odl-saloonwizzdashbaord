@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { message, Button, Modal, Select, Image, Spin } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import '../../Css/Forms.css'
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import { DisplayUtilities } from "../../../Store/Action/Action";
 import { useForm } from "react-hook-form";
 import { DisplayUtilitiesApi } from "../../../Services/Api";
 import UtilitiesSub from '../SubComponents/UtilitiesSub';
+import * as actions from '../../../Store/Action/Utilities';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 
 function Utilities() {
@@ -18,49 +20,17 @@ function Utilities() {
     const [Data, setData] = useState();
     const { Option } = Select;
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.Utilities }),
+        shallowEqual
+      );
+      const { totalCount, entities, listLoading } = currentState;
+    const dispatch = useDispatch();
     //useEffect
     useEffect( () => {
-        ApiCall()
-        
-        
-        setTimeout(function () {
-            console.log("=>")
-            setloading(false);
-        }, 15000);
-        
+         dispatch(actions.fetchUtilities());        
     }, [])
 
-
-     const ApiCall =async ()=>{
-
-          try {
-            const GETUtilitiesHandler = await DisplayUtilitiesApi.GetAll()
-             console.log("GETUtilitiesHandler",GETUtilitiesHandler)
-            if(GETUtilitiesHandler){
-                console.log("GETUtilitiesHandler",GETUtilitiesHandler)
-                setTheArray(GETUtilitiesHandler)
-                setloading(false)
-       
-            }
-            else{
-                console.log("check")
-                setTheArrayCheck(false)
-                setloading(false)
-            }
-              
-        } catch (error) {
-                console.log("Server Error :",error)
-                message.error("Server is Down")
-              setloading(false)
-        }
-
-        }
-
-    function UploadHandler() {
-        onSubmit()
-        setIsModalVisible(false);
-        message.success("Uploaded successfully")
-    }
 
     const onSubmit = async (data) => {
         if (!image) {
@@ -71,17 +41,8 @@ function Utilities() {
         formData.append('image', image)
         formData.append('Title', data.Title)
         formData.append('Supplier', data.Supplier)
-        try {
-            const Response = await DisplayUtilitiesApi.AddUtilities(formData)
-              const GETUtilitiesHandler = await DisplayUtilitiesApi.GetAll()
-              setTheArray(GETUtilitiesHandler)
-               setTheArrayCheck(true)
-            message.success("New Utility added successfully")
-            setIsModalVisible(false);
-        } catch (error) {
-            message.error("Cannot add new utility at this time")
-            setIsModalVisible(false);
-        }
+            dispatch(actions.createUtility(formData));
+            setIsModalVisible(false); 
 }
     }
 
@@ -94,7 +55,7 @@ function Utilities() {
 
     return (
         <>
-            {loading ? (
+            {listLoading ? (
                 <div class="text-center">
                 <Spin className="SpinClass" size="large" />
                 </div>
@@ -102,7 +63,7 @@ function Utilities() {
                 <>
                     <div class=" d-flex justify-content-between align-items-center px-3">
 
-                        <h2>   Utilities  </h2>
+                            <h2>   Utilities {totalCount}  </h2>
                         <div>
                             <Button
                                 style={buttonstyle}
@@ -119,11 +80,11 @@ function Utilities() {
                            <div class="row">
                                {
                                
-                                    theArrayCheck ?(
+                                        entities ?(
 
-                                            theArray.map((x)=>{
+                                            entities.map((x)=>{
                                                 return (
-                                                    <UtilitiesSub id={x._id} name={x.Title} image={x.image} Supplier={x.Supplier} ApiCall={ApiCall}/>
+                                                    <UtilitiesSub id={x._id} name={x.Title} image={x.image} Supplier={x.Supplier} ApiCall={"ApiCall"}/>
                                                 )
                                             })
                                     ):(
