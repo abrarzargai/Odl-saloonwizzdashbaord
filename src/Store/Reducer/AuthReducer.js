@@ -8,24 +8,27 @@ const AuthSlice = createSlice({
         isAuthFetching: false,
         authSuccess: false,
         authError: false,
+        Role:'user',
+        User:null,
         errMsg: '',
     },
     reducers: {
         // changing state of isAuthFetching
         getAuthStart: (state, action) => {
-            console.log("started")
+            
             state.isAuthFetching = true;
         },
         // ading data
         addData: (state, action) => {
+           
             state.isAuthFetching = false;
             state.authSuccess = true;
             state.authError = false;
-            console.log("In authSuccess")
+           
         },
         // removing data
         removeUser: (state, action) => {
-            console.log("inside remove user")
+           
             state.isAuthFetching = false;
             state.authSuccess = false;
             state.authError = false;
@@ -33,7 +36,7 @@ const AuthSlice = createSlice({
         },
         // in case authError occurs
         getAuthError: (state, action) => {
-            console.log("In authErrors")
+            
             state.authSuccess = false;
             state.isAuthFetching = false;
             state.authError = true;

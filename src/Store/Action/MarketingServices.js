@@ -64,6 +64,7 @@ export const deleteMarketingService = data => dispatch => {
     .then(response => {
     
       dispatch(actions.marketingServiceDeleted(data.Id));
+      
     })
     .catch(error => {
       error.clientMessage = "Can't delete marketingService";

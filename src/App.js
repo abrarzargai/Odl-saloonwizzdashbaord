@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import Login from './Component/Pages/Login';
 import Signup from './Component/Pages/Signup';
 import SignIn from './Component/Pages/Signin'
-
+import './App.css'
 function App() {
   const location = useNavigate();
   const [isAdmin, setAdminLogin] = useState(false)

@@ -125,11 +125,11 @@ function UTILITYBILL() {
                      </h4>
 
                 <div>
-                    <Button
-                        style={buttonstyle}
+                    <button
+                       className='addButton'
                         onClick={() => { setIsModalVisible(true) }}>
                         Upload a File
-                    </Button>
+                    </button>
                 </div>
             </div>
 
@@ -195,7 +195,7 @@ function UTILITYBILL() {
                                                 <span>Description</span>
                                             </div>
                                     
-                                            <input type="submit" style={button2style} value="Add " />
+                                    <input type="submit" className='addButton' value="Add " />
                                         </form>
 
                                     </div>
@@ -213,38 +213,3 @@ function UTILITYBILL() {
 }
 
 export default UTILITYBILL;
-
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "5px 35px",
-    borderRadius: '8px',
-    border: "none"
-};
-
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "0px 35px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-const CardStyleUtilities = {
-    width: '14.1rem',
-    boxShadow: ' 0 5px 5px 1px rgb(138, 138, 138)',
-
-};
-const Cardimage = {
-    width: '14rem',
-    borderRadius: ' 10px 10px 0px 0px'
-};
-
-const Data = [
-    { name: "Image-1", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-    { name: "Image-2", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-    { name: "Image-3", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-    { name: "Image-4", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-    { name: "Image-5", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-    { name: "Image-6", image:"https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg"},
-]

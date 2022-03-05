@@ -80,7 +80,7 @@ function ClientManagerTabel(props) {
             width: '20%',
             render: (item, record) => (
                 <>
-                    <Avatar size={50} className="mr-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068' }}>{item[0].FirstName[0]}</Avatar>
+                    <Avatar size={50} className="mr-4 backgroundClass text-white" >{item[0].FirstName[0]}</Avatar>
                     <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
                 </>
             ),
@@ -129,7 +129,7 @@ function ClientManagerTabel(props) {
             title: 'LastBillPaid',  
             dataIndex: 'IsPaid',
             key: "IsPaid",
-            sorter: true,
+            sorter: (a, b) => a.IsPaid - b.IsPaid,
             render: (t, r) => {
                 
                 if(t){
@@ -144,7 +144,7 @@ function ClientManagerTabel(props) {
             title: 'Details',
             dataIndex: 'key',
             render: (text, index) => (
-                <input type="Button" style={button2style} value="View Details"
+                <input type="Button" className='addButton' value="View Details"
                     onClick={() => {
                         setDetails(index)
                         setDetailModel(true)
@@ -156,7 +156,7 @@ function ClientManagerTabel(props) {
         {
             title: 'Deals',
             render: (text, index) => (
-                <input type="Button" style={button2style} value="View Deals"
+                <input type="Button" className='addButton' value="View Deals"
                     onClick={() => {
                         setDetails(index)
                         setDealDetails(index.DealList || [])
@@ -380,7 +380,7 @@ function ClientManagerTabel(props) {
                                                             <span>Description</span>
                                                         </div>
 
-                                                        <input type="submit" style={button2style} value="Add new Deal" />
+                                                        <input type="submit" className='addButton' value="Add new Deal" />
                                                     </form>
 
 
@@ -409,18 +409,4 @@ function ClientManagerTabel(props) {
 
 export default ClientManagerTabel;
 
-
-
-
-
-
-const button2style = {
-    fontSize:'13px',
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "4px 20px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
 

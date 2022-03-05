@@ -1,6 +1,6 @@
+import { message } from 'antd';
 import * as requestFromServer from "../Crud/Calenders";
-import {calendersSlice, callTypes} from "../Reducer/calendersSlice";
-import { Button, Divider, message, Modal, Spin } from 'antd';
+import { calendersSlice, callTypes } from "../Reducer/calendersSlice";
 
 const {actions} = calendersSlice;
 

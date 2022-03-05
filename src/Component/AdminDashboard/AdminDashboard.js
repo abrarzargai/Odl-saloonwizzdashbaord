@@ -7,7 +7,7 @@ import MainContent from './CommonComponent/MainContent/MainContent';
 function ClientDashboard() {
     return (
         <Layout>
-                <SideBar/>
+            <SideBar className="backgroundClass"/>
                 <Layout>
                      {/* <Header /> */}
                      <MainContent/>

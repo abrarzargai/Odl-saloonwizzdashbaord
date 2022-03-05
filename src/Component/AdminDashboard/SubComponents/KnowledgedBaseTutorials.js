@@ -122,11 +122,11 @@ function UTILITYBILL() {
                      </h4>
 
                 <div>
-                    <Button
-                        style={buttonstyle}
+                    <button
+                        className='addButton'
                         onClick={() => { setIsModalVisible(true) }}>
                         Upload a File
-                    </Button>
+                    </button>
                 </div>
             </div>
 
@@ -192,7 +192,7 @@ function UTILITYBILL() {
                                                 <span>Description</span>
                                             </div>
                                     
-                                            <input type="submit" style={button2style} value="Add " />
+                                    <input type="submit" className='addButton' value="Add " />
                                         </form>
 
                                     </div>

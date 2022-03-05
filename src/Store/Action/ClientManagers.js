@@ -1,6 +1,6 @@
+import { message } from 'antd';
 import * as requestFromServer from "../Crud/ClientManagers";
-import {clientManagersSlice, callTypes} from "../Reducer/clientManagersSlice";
-
+import { callTypes, clientManagersSlice } from "../Reducer/clientManagersSlice";
 const {actions} = clientManagersSlice;
 
 export const fetchClientManagers = () => dispatch => {
@@ -12,6 +12,7 @@ export const fetchClientManagers = () => dispatch => {
       const entities  = response.data.Data;
       const totalCount = response.data.Data.length;
       dispatch(actions.clientManagersFetched({ totalCount, entities }));
+      
     })
     .catch(error => {
       error.clientMessage = "Can't find clientManagers";
@@ -28,6 +29,7 @@ export const createClientManagerDeal = clientManagerForCreation => dispatch => {
       console.log(response)
       const DealList = response.data.Data.DealList;
       dispatch(actions.createClientManagerDeal({ DealList, data: clientManagerForCreation}));
+      message.info("Created")
     })
     .catch(error => {
       error.clientMessage = "Can't create clientManager";
@@ -43,6 +45,7 @@ export const deleteClientManagerDeal = ids => dispatch => {
     .then((res) => {
       console.log("res",res)
       dispatch(actions.deleteClientManagerDeal(res.data.Data));
+      message.info("Deleted")
     })
     .catch(error => {
       error.clientMessage = "Can't delete clientManagers";

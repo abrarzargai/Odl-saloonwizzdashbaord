@@ -57,7 +57,7 @@ function ServicesSub(props) {
                                 <h5 class="card-title">{props.Duration}</h5>
                                 <h5 class="card-title"> $ {props.Amount}</h5>
                                 <h5 class="card-title">{props.Description}</h5>
-                                <button class='btn btn-outline-danger mb-2 px-4' style={buttondeletestyle} onClick={Delete} >
+                                <button class='btn btn-outline-danger mb-2 px-4'  onClick={Delete} >
 
                                     Delete {props.Title} Service </button>
                                 {/* Supplier */}
@@ -89,7 +89,7 @@ function ServicesSub(props) {
 
                                        
 
-                                        <input type="submit" style={button2style} value="Update" />
+                                        <input type="submit" className='addButton' value="Update" />
                                     </form>
                                 </div>
 
@@ -112,17 +112,6 @@ function ServicesSub(props) {
 export default ServicesSub;
 
 
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "10px 35px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-const buttondeletestyle = {
-
-};
 
 
 

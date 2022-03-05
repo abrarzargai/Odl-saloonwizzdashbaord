@@ -67,21 +67,21 @@ function SideBar() {
 
             <Modal title="Logout Confirmation" visible={LogoutModel} onOk={handleOk} onCancel={handleCancel}
                 footer={[
-                    <Button onClick={handleCancel}>
+                    <button className=' whitebutton mx-2' onClick={handleCancel}>
                         Cancel
-                    </Button>,
-                    <Button key="Logout"
-                        style={buttonstyle}
+                    </button>,
+                    <button className='addButton' key="Logout"
+                       
                     onClick={handleOk}>
                         Logout
-                    </Button>
+                    </button>
                 ]}
             >
                 <p>Are Your Sure ?</p>
                 
             </Modal>
 
-            <Sider width={260} style={mystyle} breakpoint="sm" collapsedWidth="0"
+            <Sider width={260} className="backgroundClass" breakpoint="sm" collapsedWidth="0"
                 onBreakpoint={broken => {
                     console.log(broken);
                 }}
@@ -99,7 +99,7 @@ function SideBar() {
                 </div>
 
 
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} SelectedKeysc  >
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} >
                     <Menu.Item key="1" icon={<AppstoreOutlined />}>
                         <Link to="/AdminDashboard/">Home</Link>
 
@@ -113,12 +113,7 @@ function SideBar() {
                         <Menu.Item key="3" icon={<ExceptionOutlined />} >
                             <Link to="/AdminDashboard/SupplierInvoices">Supplier Invoices</Link>
                         </Menu.Item>
-                        {/* <Menu.Item key="4" icon={<KeyOutlined />}  >
-                            <Link to="/AdminDashboard/Password">Password</Link>
-                        </Menu.Item>
-                        <Menu.Item key="5" icon={<IdcardOutlined />}  >
-                            <Link to="/AdminDashboard/General">General</Link>
-                        </Menu.Item> */}
+                      
                     </SubMenu>
 
                     <Menu.Item key="4" icon={<ContainerOutlined />}>

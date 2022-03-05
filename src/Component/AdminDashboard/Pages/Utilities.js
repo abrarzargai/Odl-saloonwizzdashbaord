@@ -65,11 +65,11 @@ function Utilities() {
 
                             <h2>   Utilities {totalCount}  </h2>
                         <div>
-                            <Button
-                                style={buttonstyle}
+                            <button
+                                    className='addButton'
                                 onClick={() => { setIsModalVisible(true) }}>
                                 Add Utility
-                            </Button>
+                            </button >
                         </div>
                     </div>
 
@@ -140,7 +140,7 @@ function Utilities() {
                                             </div>
                                             {/*    {errors?.Supplier?.type === "required" && <p className="text-danger">Must Enter Supplier Name</p>} */}
 
-                                            <input type="submit" style={button2style} value="Add new Utility" />
+                                                <input type="submit" className='addButton' value="Add new Utility" />
                                         </form>
 
                                     </div>
@@ -162,31 +162,7 @@ function Utilities() {
 
 export default Utilities;
 
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "0px 35px",
-    borderRadius: '8px',
-    border: "none"
-};
 
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "10px 35px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-const CardStyleUtilities = {
-    width: '14rem',
-    boxShadow: ' 0 5px 5px 1px rgb(138, 138, 138)',
-    borderRadius: '10px'
-};
-const Cardimage = {
-
-    borderRadius: ' 10px 10px 0px 0px'
-};
 
 
 

@@ -1,0 +1,67 @@
+.backgroundClass{
+background: linear-gradient(to right, #AC5288, #3F1254) !important;
+}
+.textclass {
+    color: linear-gradient(to right, #AC5288, #3F1254) !important;
+}
+
+.ant-spin-dot-item {
+background: linear-gradient(to right, #AC5288, #3F1254) !important;
+}
+.addButton{
+    padding:10px 30px !important;
+    background: linear-gradient(to right, #AC5288, #3F1254) !important;
+    color:white !important;
+    border: none !important;
+    border-radius: 20px !important;
+    box-shadow:  0px 3px 5px 1px rgb(138, 138, 138) !important;
+
+}
+
+.whitebutton {
+    padding: 10px 30px !important;
+    background: white !important;
+    color: linear-gradient(to right, #AC5288, #3F1254) !important;
+    border: none !important;
+    border-radius: 20px !important;
+    box-shadow: 0 3px 5px 1px rgb(138, 138, 138) !important;
+
+}
+/* REACT-BIG-CALENDER */
+.rbc-timeslot-group {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+}
+
+.rbc-timeslot-group.second {
+    background-color: green;
+}
+
+ /* AntD Sidebar */
+.ant-menu-item-selected {
+    background-color: #f7d8f354 !important;
+}
+.ant-menu {
+    background: linear-gradient(to right, #AC5288, #3F1254) !important;
+    font-size: 13px !important;
+
+    font-weight: bold;
+}
+.Saloon {
+    margin-top: 10px;
+    font-weight: 400;
+}
+.Wizz {
+    margin-top: -22px;
+    background: 'red';
+    font-weight: 900;
+
+
+}
+
+.digitalAssistance-isRead {
+     color: #9e1068 !important;
+    margin-left: 8px;
+    margin-bottom: 15px;
+}

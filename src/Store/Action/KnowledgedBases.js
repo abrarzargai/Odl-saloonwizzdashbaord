@@ -1,6 +1,6 @@
+import { message } from 'antd';
 import * as requestFromServer from "../Crud/KnowledgedBases";
-import {knowledgedBasesSlice, callTypes} from "../Reducer/knowledgedBasesSlice";
-
+import { callTypes, knowledgedBasesSlice } from "../Reducer/knowledgedBasesSlice";
 const {actions} = knowledgedBasesSlice;
 
 export const fetchKnowledgedBases = () => dispatch => {
@@ -41,6 +41,7 @@ export const deleteKnowledgedBase = id => dispatch => {
     .deleteKnowledgedBase(id)
     .then(response => {
       dispatch(actions.knowledgedBaseDeleted({ id }));
+      message.info("Deleted")
     })
     .catch(error => {
       error.clientMessage = "Can't delete knowledgedBase";
@@ -55,6 +56,7 @@ export const createKnowledgedBase = knowledgedBaseForCreation => dispatch => {
     .then(response => {
       const { knowledgedBase } = response.data;
       dispatch(actions.knowledgedBaseCreated({ knowledgedBase }));
+      message.info("Created")
     })
     .catch(error => {
       error.clientMessage = "Can't create knowledgedBase";
@@ -68,6 +70,7 @@ export const updateKnowledgedBase = knowledgedBase => dispatch => {
     .updateKnowledgedBase(knowledgedBase)
     .then(() => {
       dispatch(actions.knowledgedBaseUpdated({ knowledgedBase }));
+      message.info("Updated")
     })
     .catch(error => {
       error.clientMessage = "Can't update knowledgedBase";
@@ -81,6 +84,7 @@ export const updateKnowledgedBasesStatus = (ids, status) => dispatch => {
     .updateStatusForKnowledgedBases(ids, status)
     .then(() => {
       dispatch(actions.knowledgedBasesStatusUpdated({ ids, status }));
+      message.info("Updated")
     })
     .catch(error => {
       error.clientMessage = "Can't update knowledgedBases status";
@@ -94,6 +98,7 @@ export const deleteKnowledgedBases = ids => dispatch => {
     .deleteKnowledgedBases(ids)
     .then(() => {
       dispatch(actions.knowledgedBasesDeleted({ ids }));
+      message.info("Deleted")
     })
     .catch(error => {
       error.clientMessage = "Can't delete knowledgedBases";

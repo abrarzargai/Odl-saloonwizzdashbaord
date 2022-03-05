@@ -125,6 +125,7 @@ export const AddSupplier = utility => dispatch => {
     .AddSupplier(utility)
     .then((response) => {
       dispatch(actions.utilityUpdated(response.data.Data));
+      
     })
     .catch(error => {
       error.clientMessage = "Can't update utility";

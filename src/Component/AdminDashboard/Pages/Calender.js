@@ -1,14 +1,12 @@
-import { Button, Divider, message, Modal, Spin} from 'antd';
+import { Divider, message, Modal, Spin } from 'antd';
 import { format } from 'date-fns';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from "react-hook-form";
-import { Reminder } from "../../../Services/Api";
-import * as actions from '../../../Store/Action/Calenders';
-import { v4 as uuidv4 } from 'uuid';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import * as actions from '../../../Store/Action/Calenders';
 import '../../Css/Forms.css';
 
 
@@ -50,7 +48,24 @@ function Calender() {
         setReminderModel(false);
         message.info("Deleted")
     }
-
+   const  eventStyleGetter = (event, start, end, isSelected)=> {
+      
+       
+        var style = {
+            background: "linear-gradient(to right, #AC5288, #3F1254)" ,
+            borderRadius: '10px',
+            textAlign:'center',
+            boxShadow:'0 3px 5px 1px rgb(138, 138, 138)',
+            border:'none',
+            opacity: 0.9,
+            color: 'white',
+            border: '0px',
+            display: 'block'
+        };
+        return {
+            style: style
+        };
+    }
     
     return (
         <>
@@ -60,12 +75,12 @@ function Calender() {
 
                 <h2>   </h2>
                 <div>
-                    <Button
+                    <button
 
-                        style={buttonstyle}
+                       className='addButton'
                         onClick={() => { setIsModalVisible(true) }}>
                         Add
-                    </Button>
+                    </button>
                 </div>
             </div>
             <div>
@@ -86,7 +101,7 @@ function Calender() {
                        setReminderModel(true);
                         console.log(e);
                      }}
-                    
+                            eventPropGetter={(eventStyleGetter)}
                 />
                 )}
             </div>
@@ -121,7 +136,7 @@ function Calender() {
                                        
                                     </div>
                                     
-                                    <input type="submit" style={button2style} value="Add" />
+                                    <input type="submit" className='addButton' value="Add" />
                                 </form>
 
                             </div>
@@ -138,8 +153,8 @@ function Calender() {
             <Modal visible={ReminderModel} onCancel={() => { setReminderModel(false); }}
                 footer={[
                     <div div className='text-center' >
-                        <Button style={button2style} className="mb-2 " onClick={() => Delete(ReminderData.id)}>  Delete Reminder </Button>
-                        <Button style={button2style} className="mb-2 " onClick={() => setReminderModel(false)}>  Cancel </Button>
+                        <button className='addButton mb-2 mx-4' onClick={() => Delete(ReminderData.id)}>  Delete Reminder </button>
+                        <button className='addButton mb-2'  onClick={() => setReminderModel(false)}>  Cancel </button>
                     </div>
                 ]}
             >
@@ -163,36 +178,3 @@ function Calender() {
 
 export default Calender;
 
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "0px 35px",
-    borderRadius: '8px',
-    border: "none"
-};
-
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "10px 35px",
-    paddingBottm:'20px',
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-
-
-const initialEvents = [
-    {
-        id: 0,
-        title: "All Day Event very long title",
-        start: new Date(2022, 2, 3),
-        end: new Date(2022, 2, 3)
-    },
-    {
-        id: 1,
-        title: "Long Event",
-        start: new Date(2022, 2, 2),
-        end: new Date(2022, 2, 2)
-    },
-];

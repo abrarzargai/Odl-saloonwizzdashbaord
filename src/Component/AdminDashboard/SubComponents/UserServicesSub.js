@@ -82,7 +82,7 @@ function ClientManagerTabel(props) {
             width: '20%',
             render: (item, record) => (
                 <>
-                    <Avatar size={54} className="mr-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068' }}>{item[0].FirstName[0]}</Avatar>
+                    <Avatar size={54} className="mr-4 backgroundClass text-white ">{item[0].FirstName[0]}</Avatar>
                     <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
                 </>
             ),

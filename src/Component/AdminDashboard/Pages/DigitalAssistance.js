@@ -55,7 +55,7 @@ function DigitalAssistance() {
                                         <h6>
 
                                             {/* <Avatar  icon="" className="mr-4" /> */}
-                                            <Avatar size={54} className="mr-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068' }}>{x.UserName[0]}</Avatar>
+                                            <Avatar size={54} className="mr-4 backgroundClass text-white" >{x.UserName[0]}</Avatar>
                                             <span className="ml-5" style={{ marginLeft: '10px' }}> {x.UserName}</span>
                                             {
                                                 x.isRead ? (
@@ -63,7 +63,7 @@ function DigitalAssistance() {
 
                                                 ) : (
                                                     <Tooltip title="Click to Mark as read">
-                                                        <MailOutlined style={ReadStyle} onClick={() => { update(x) }} />
+                                                            <MailOutlined className="digitalAssistance-isRead" onClick={() => { update(x) }} />
                                                     </Tooltip>
                                                 )
                                             }

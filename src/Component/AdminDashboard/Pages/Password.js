@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { message, Button, Modal } from 'antd';
-import '../../Css/Forms.css'
+import { Divider, message } from 'antd';
 import { useForm } from "react-hook-form";
-import { Tag, Divider } from 'antd';
 import { UserApi } from "../../../Services/Api";
+import '../../Css/Forms.css';
 
 
 function Password() {
@@ -40,7 +38,7 @@ function Password() {
                                 <input type="text" required="required"  {...register("NewPassword", { required: true })} class="form-control" />
                                 <span>NewPassword</span>
                         </div>
-                         <input type="submit" style={buttonstyle} value="Update Password" />
+                         <input type="submit" className='addButton' value="Update Password" />
                     </form>
                     </div>
                     </div>
@@ -54,9 +52,3 @@ function Password() {
 
 export default Password;
 
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "5px 35px",
-    borderRadius: '8px',
-};

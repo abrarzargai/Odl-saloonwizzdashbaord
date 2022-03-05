@@ -15,7 +15,7 @@ function SupplierInvoices() {
     const [theArrayCheck, setTheArrayCheck] = useState(true);
     const [loading, setloading] = useState(true);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [DateVariable, setDateVariable] = useState(dateFormat("2019-04-30T08:59:00.000Z", "mmmm d, yyyy"));
+    const [DateVariable, setDateVariable] = useState(dateFormat(new Date(), "mmmm d, yyyy"));
     const [Timepicker, setTimepicker] = useState(false);
     const [image, setimage] = useState();
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
@@ -74,7 +74,7 @@ function SupplierInvoices() {
     function onChange(date, dateString) {
 
         setTimepicker(false)
-        setDateVariable(dateFormat(dateString, "mmmm d, yyyy"))
+        setDateVariable(dateFormat(date, "mmmm d, yyyy"))
 
     }
 
@@ -85,18 +85,18 @@ function SupplierInvoices() {
 
                 <h4  >
                     <span></span>
-                    {/* <span onClick={() => {  setTimepicker(true); }} style={{ background:" #f0f2f5 "}}> {DateVariable} </span>
+                    <span onClick={() => {  setTimepicker(true); }} style={{ background:" #f0f2f5 "}}> {DateVariable} </span>
 
-                    <DatePicker  open={Timepicker}  className="timepickerstyle text-danger invisible" allowClear={true} onChange={onChange} /> */}
+                    <DatePicker  open={Timepicker}  className="timepickerstyle text-danger invisible" allowClear={true} onChange={onChange} />
 
                 </h4>
 
                 <div>
-                    <Button
-                        style={buttonstyle}
+                    <button
+                        className='addButton'
                         onClick={() => { setIsModalVisible(true) }}>
                         Upload a File
-                    </Button>
+                    </button>
                 </div>
             </div>
 
@@ -166,7 +166,7 @@ function SupplierInvoices() {
                                         <span>Name</span>
                                     </div>
 
-                                    <input type="submit" style={button2style} value="Add " />
+                                    <input type="submit" className='addButton' value="Add " />
                                 </form>
 
                             </div>
@@ -184,38 +184,3 @@ function SupplierInvoices() {
 }
 
 export default SupplierInvoices;
-
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "5px 35px",
-    borderRadius: '8px',
-    border: "none"
-};
-
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "0px 35px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-const CardStyleUtilities = {
-    width: '14.1rem',
-    boxShadow: ' 0 5px 5px 1px rgb(138, 138, 138)',
-
-};
-const Cardimage = {
-    width: '14rem',
-    borderRadius: ' 10px 10px 0px 0px'
-};
-
-const Data = [
-    { name: "Image-1", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-    { name: "Image-2", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-    { name: "Image-3", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-    { name: "Image-4", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-    { name: "Image-5", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-    { name: "Image-6", image: "https://i.pinimg.com/originals/bf/12/39/bf1239938e99faa94fedc6d2c10fc3f6.jpg" },
-]

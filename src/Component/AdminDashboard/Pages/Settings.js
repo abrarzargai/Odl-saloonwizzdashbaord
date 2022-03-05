@@ -8,16 +8,20 @@ import { useForm } from "react-hook-form";
 function Settings() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [User, SetUser] = useState({});
+    const [linkModel, SetlinkModel] = useState(false);
 
     useEffect(() => {
         const response = JSON.parse(localStorage.getItem('profile'))
-        console.log(response)
+        console.log("response", response)
         SetUser(response)
 
     },[])
     async function onSubmit(data) {
         console.log("Data",data)
     }
+    var curr = new Date();
+    curr.setDate(curr.getDate() + 3);
+    var date = curr.toISOString().substr(0, 10);
     return (
         <>
             
@@ -27,65 +31,109 @@ function Settings() {
                         <h3 className="text-center">Personal</h3>
                         <div className="bg-light py-4 mb-1 px-3 d-flex align-items-center justify-content-center" >
                             
-                            <Avatar size={50} className="mx-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068',fontSize:'30px' }}>{User.FirstName[0]}</Avatar>
-                            <h6 class='ml-2' >
-                                <p className="pt-5">Update Avatar</p>
-                                <p style={{marginTop:"-15px"}}>or Import from Facebook or Instagram</p>
-                            </h6>
-                            <Dropdown overlay={dropdownmenu} className='text-dark' >
-                                <a className="ant-dropdown-link " onClick={e => e.preventDefault()}>
-                                    <EllipsisOutlined style={{ fontSize: '26px',color:"gray", marginLeft:"10px" }} 
-                                    className="mt-5 ml-2"/>
-                                </a>
-                            </Dropdown>
+                            <Avatar size={75} className="mx-4 backgroundClass text-white" >sddsfsdf</Avatar>
+                           
 
                         </div>
                         <form className="bg-light py-5 px-3 ">
                             <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.FirstName} class="form-control" readonly />
+                                <input type="text" required="required"  class="form-control" readonly />
                                 <span>FirstName</span>
                             </div>
                         
-
+                            <div className='text-center'>
+                                <button type="submit" className='addButton'> Add New Link</button>
+                            </div>
                         </form>
                     </div>
 
                     <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
                         <h3 className="text-center">Profile</h3>
-                        <form onSubmit={handleSubmit(onSubmit)} className="bg-light py-5 px-3 ">  
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.FirstName} {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>FirstName</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.LastName} {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>LastName</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="Date" required="required" value="2013-01-08" {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>Date Of Birth</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.BusinessName} {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>Business Name</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo City" {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>City</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value={User.BusinessAddress} {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>Office Address</span>
-                        </div>
-                        <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Supplier Name" {...register("OldPassword", { required: true })} class="form-control"  />
-                            <span>Supplier Name </span>
-                        </div>
-                            <input type="submit" style={buttonstyle} value="Update" />
-                    </form>
+                        <form onSubmit={handleSubmit(onSubmit)} className="bg-light py-5 px-3 ">
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue='Demo' {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>FirstName</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue='Demo' {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>LastName</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="date" required="required" defaultValue={date} {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>Date Of Birth</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue='Demo' {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>Business Name</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue="Demo City" {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>City</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue='Demo' {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>Office Address</span>
+                            </div>
+                            <div class="inputbox form-group my-4">
+                                <input type="text" required="required" defaultValue="Demo Supplier Name" {...register("OldPassword", { required: true })} class="form-control" />
+                                <span>Supplier Name </span>
+                            </div>
+                            <div className='text-center'>
+                            <input type="submit" className='addButton' value="Update" />
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            <Modal visible={linkModel} onCancel={() => { SetlinkModel(false); }}
+                footer={[
+                    // <div div className='text-center' >
+                    //     <Button style={button2style} className="my-2" onClick={() => UploadHandler()}>  Add New Utility </Button>
+                    // </div>
+                ]}
+            >
+
+                {/* Form Stated Here */}
+
+
+                <div className=" text-center">
+                    <h5 >Add New Link</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12  align-items-center justify-content-center">
+                                <div class="form-group files">
+                                    <input type="file" class="form-control" multiple="" onChange={onImageChange} />
+                                </div>
+                            </div>
+                            <div class="col-12 ">
+                                <form onSubmit={handleSubmit(onSubmit)} >
+                                    <div class="inputbox form-group mt-4">
+                                        <input type="text" required="required" class="form-control" {...register("Title", { required: true })} />
+                                        <span>Utility Title</span>
+                                    </div>
+                                    {/* {errors?.Title?.type === "required" && <p className="text-danger">Must Enter Utility Title</p>} */}
+
+
+                                    <div class="inputbox form-group mt-4">
+                                        <input type="text" required="required" class="form-control" {...register("Supplier", { required: true })} />
+                                        <span>Supplier Name</span>
+                                    </div>
+                                    {/*    {errors?.Supplier?.type === "required" && <p className="text-danger">Must Enter Supplier Name</p>} */}
+
+                                    <input type="submit" className='addButton' value="Add new Utility" />
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                {/* Form Ended Here */}
+
+            </Modal >
         </>
     );
 }
@@ -108,9 +156,3 @@ const dropdownmenu = (
     </Menu>
 );
 
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "5px 35px",
-    borderRadius: '8px',
-};

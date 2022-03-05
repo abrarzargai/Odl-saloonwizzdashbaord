@@ -50,16 +50,16 @@ function Utilities() {
                 </div>
             ) : (
                 <>
-                    <div class=" d-flex justify-content-between align-items-center px-3">
+                    <div class=" d-flex justify-content-between align-items-center px-3 mb-4">
 
                             <h2 style={{ color: '#9e1068' }} >   Marketing Services  </h2>
                         <div>
-                            <Button
+                            <button
                             
-                                style={buttonstyle}
+                                    className='addButton'
                                 onClick={() => { setIsModalVisible(true) }}>
                                 Add 
-                            </Button>
+                            </button>
                         </div>
                     </div>
 
@@ -142,7 +142,7 @@ function Utilities() {
                                                 </div>
                                         
                                            
-                                            <input type="submit" style={button2style} value="Add" />
+                                                <input type="submit" className='addButton' value="Add" />
                                         </form>
 
                                     </div>

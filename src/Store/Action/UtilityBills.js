@@ -1,6 +1,6 @@
+import { message } from 'antd';
 import * as requestFromServer from "../Crud/UtilityBills";
-import {utilityBillsSlice, callTypes} from "../Reducer/utilityBillsSlice";
-
+import { callTypes, utilityBillsSlice } from "../Reducer/utilityBillsSlice";
 const {actions} = utilityBillsSlice;
 
 export const fetchUtilityBills = (Email) => dispatch => {
@@ -38,6 +38,7 @@ export const fetchUtilityBill = id => dispatch => {
     .then(response => {
       const utilityBill = response.data;
       dispatch(actions.utilityBillFetched({ utilityBillForEdit: utilityBill }));
+      
     })
     .catch(error => {
       error.clientMessage = "Can't find utilityBill";
@@ -51,6 +52,7 @@ export const deleteUtilityBill = id => dispatch => {
     .deleteUtilityBill(id)
     .then(response => {
       dispatch(actions.utilityBillDeleted({ id }));
+      message.info("Deleted")
     })
     .catch(error => {
       error.clientMessage = "Can't delete utilityBill";
@@ -66,6 +68,7 @@ export const createUtilityBill = utilityBillForCreation => dispatch => {
       console.log(response.data.Data.Filling)
       const data = response.data.Data.Filling;
       dispatch(actions.utilityBillCreated(data));
+      message.info("Created")
     })
     .catch(error => {
       error.clientMessage = "Can't create utilityBill";
@@ -79,6 +82,7 @@ export const updateUtilityBill = utilityBill => dispatch => {
     .updateUtilityBill(utilityBill)
     .then(() => {
       dispatch(actions.utilityBillUpdated({ utilityBill }));
+      message.info("Updated")
     })
     .catch(error => {
       error.clientMessage = "Can't update utilityBill";
@@ -92,6 +96,7 @@ export const updateUtilityBillsStatus = (ids, status) => dispatch => {
     .updateStatusForUtilityBills(ids, status)
     .then(() => {
       dispatch(actions.utilityBillsStatusUpdated({ ids, status }));
+      message.info("Updated")
     })
     .catch(error => {
       error.clientMessage = "Can't update utilityBills status";
@@ -105,6 +110,7 @@ export const deleteUtilityBills = ids => dispatch => {
     .deleteUtilityBills(ids)
     .then(() => {
       dispatch(actions.utilityBillsDeleted({ ids }));
+      message.info("Deleted")
     })
     .catch(error => {
       error.clientMessage = "Can't delete utilityBills";

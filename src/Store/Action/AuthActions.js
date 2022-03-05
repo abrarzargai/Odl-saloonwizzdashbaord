@@ -1,10 +1,7 @@
-import {
-    addData,
-    getAuthStart,
-    getAuthError,
-    removeUser
-} from '../Reducer/AuthReducer'
 import axios from 'axios';
+import {
+    addData, getAuthError, getAuthStart, removeUser
+} from '../Reducer/AuthReducer';
 
 
 
@@ -18,7 +15,7 @@ export const SignMeUp = (data) => async (dispatch) => {
          await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/user/signup', data?.userDetails)
             .then(function (response) {
                 console.log("got respnse in posted : ", response);
-                dispatch(addData())
+                dispatch(addData(response.data))
             })
             .catch(function (error) {
                 console.log("Sorry error : ", error);
