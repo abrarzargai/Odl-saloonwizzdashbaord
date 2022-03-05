@@ -1,9 +1,9 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Divider, Image, message, Modal, Space, Table, Tag } from 'antd';
+import { Avatar, Divider, Image, message, Modal, Space, Table, Tag, Spin } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import * as actions from '../../../Store/Action/DigitalAssistances';
+import * as actions from '../../../Store/Action/ClientManagers';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 function ClientManagerTabel(props) {
@@ -15,12 +15,12 @@ function ClientManagerTabel(props) {
     const [isBill, setisBill] = useState(false);
     const [visible, setVisible] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [ myData , setMyData ] = useState([])
+    const [ myData , setMyData ] = useState(null)
     const [ myImage , setMyImage ] = useState('')
     const [ LOAFormimage , setLOAFormimage ] = useState('')
     const [ Billimage , setbillimage ] = useState('./No item.png')
     const { currentState } = useSelector(
-        (state) => ({ currentState: state.DigitalAssistances }),
+        (state) => ({ currentState: state.ClientManagers }),
         shallowEqual
     );
     const { totalCount, entities, listLoading } = currentState;
@@ -28,82 +28,59 @@ function ClientManagerTabel(props) {
 
 
     useEffect(() => {
-        getData();
-    },[props.Utilities])
+        dispatch(actions.fetchClientManagers());
+    }, [])
 
-
-    const getData = async () => {
-        await axios.get('https://odl-saloonwizz-app.herokuapp.com/api/userutilities/getall')
-            .then(function (response) {
-                // handle success
-                let ArrayData = []
-                if (props.Utilities === 'All')
-                { 
-                    setMyData(response?.data?.Data)
-                }else{
-                response?.data?.Data.map((X)=>{
-                    if (X.Utilities.Title == props.Utilities){
-                        ArrayData.push(X)
-                    }
-                })
-                    setMyData(ArrayData)
+    useEffect(() => {
+        let ArrayData = []
+        if (props.Utilities === 'All') {
+            setMyData(null)
+        } else {
+            entities.map((X) => {
+                if (X.Utilities.Title == props.Utilities) {
+                    console.log("else hit")
+                    ArrayData.push(X)
                 }
             })
-            .catch(function (error) {
-                // handle error
-              
-            })
-            .then(function () {
-                // always executed
-            });
-    }
+            setMyData(ArrayData)
+        }
+    }, [props.Utilities])
+
+
+  
 
 
     const onSubmit = async (data) => {
         console.log(Details._id, data.Title, data.Description)
-        try {
-            const response = await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/Userutilities/AddDeal',{
+        dispatch(actions.createClientManagerDeal({
                 Id: Details._id,
                 Title: data.Title,
                 Description: data.Description
-            })
-           await getData();
-            setDealModel(false);
-            message.success("New Deal added")
-           
-        } catch (error) {
-            message.error("You already sent the deal with this name to user")
-        }
-       
+             }));
+        setDealModel(false);     
     }
 
     const DeleteDeal = async (data) => {
         console.log(Details._id,data)
-        try {
-            const response = await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/Userutilities/DeleteDeal', {
-                Id: Details._id,
+        dispatch(actions.deleteClientManagerDeal({
+               Id: Details._id,
                 Title: data.Title
-            })
-            await getData();
+            }))
             setDealModel(false);
-            message.success("Deal Deleted successfully")
 
-        } catch (error) {
-            message.error("server Down")
-        }
 
     }
 
 
 
     const columns = [
-        {
+         {
             title: 'ClientName',
             dataIndex: 'User',
             width: '20%',
             render: (item, record) => (
                 <>
-                    <Avatar size={50} icon="" className="mr-4" />
+                    <Avatar size={50} className="mr-4" style={{ color: '#fff0f6', backgroundColor: '#9e1068' }}>{item[0].FirstName[0]}</Avatar>
                     <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
                 </>
             ),
@@ -112,7 +89,14 @@ function ClientManagerTabel(props) {
         {
             title: 'Utility',
             dataIndex: 'Utilities',
-            render: (item) => item.Title,
+            render: (item, record) => {
+                if (!item) {
+                    return (<h6 className="text-danger"> - </h6>)
+                }
+                else{
+                    return (<p> {item.Title} </p>) 
+                }
+            }
         },
         // {
         //     title: 'Supplier',
@@ -121,8 +105,10 @@ function ClientManagerTabel(props) {
         {
             title: 'ExpirationDate',
             dataIndex: 'ContractExpiryDate',
-            sorter: (a, b) => a - b,
-            render: (item) => {              
+            render: (item) => {   
+                if (!item)   {
+                    return (<h6 className="text-danger"> - </h6>)
+                }else{    
                 let date = new Date(item)            
                 var newdate = new Date(
                     new Date().getFullYear(),
@@ -135,15 +121,15 @@ function ClientManagerTabel(props) {
                 } else {
                     return (<h6 className="text-danger">{`${date.getUTCDate()}/${date.getUTCMonth() + 1}/${date.getUTCFullYear()}`}</h6>)
                 }
+                }
             }
         },
+
         {
             title: 'LastBillPaid',  
             dataIndex: 'IsPaid',
-            // sorter: {
-            //     compare: (a, b) => a - b,
-            //     multiple: 2,
-            // },
+            key: "IsPaid",
+            sorter: true,
             render: (t, r) => {
                 
                 if(t){
@@ -209,92 +195,103 @@ function ClientManagerTabel(props) {
 
     return (
         <>
-           {myData.length?(
-            <Table columns={columns} dataSource={myData} className="text-center" />
+            {listLoading?(
+                
+                <div className='text-center'>
+                <Spin></Spin>
+                </div>
             ):(
-               <div className="mt-4 text-center">
-                        <img src="/no item.png" width="200" height="200" />
-                        <h6> No Data Found </h6>
-               </div> 
-            )}
-            {/* BILL IMAGE    
-            <Image
-                width={200}
-                style={{ display: 'none' }}
-                src={myImage|| '/no item.png'}
-                preview={{
-                    visible: visible,
-                    src: myImage,
-                    onVisibleChange: value => {
-                        setVisible("onchange==>",value);
-                    },
-                }}
-            />
-       
-
-            {/* //DetailsModel */}
-            <Modal visible={DetailModel} onCancel={() => { setDetailModel(false); }} footer={[]} >
-                {/* Form Stated Here */}
-
-
-                <div className=" text-center">
-                    <h5 >User Details</h5>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.User[0]?.FirstName} class="form-control" readonly />
-                        <span>FirstName</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.User[0]?.LastName} class="form-control" readonly />
-                        <span>LastName</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.User[0]?.BusinessName} class="form-control" readonly />
-                        <span>Business Name</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value="Demo City" class="form-control" readonly />
-                        <span>City</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.User[0]?.BusinessAddress} class="form-control" readonly />
-                        <span>Office Address</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.User[0]?.ContactNumber} class="form-control" readonly />
-                        <span>Phone Numer</span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.Utilities?.Title} class="form-control" readonly />
-                        <span>UtilitityName </span>
-                    </div>
-                    <div class="inputbox form-group my-4">
-                        <input type="text" required="required" value={Details?.Utilities?.Supplier} class="form-control" readonly />
-                        <span>Supplier Name </span>
-                    </div>
-                  
-                    <div>
-
-                                {/* images */}
-                        <div class=' d-flex justify-content-between align-items-center '>
-                        <div>
-                                <Image
-                                    width={200}
-                                    src={Details?.LOAForm}
-                                />
-                                <p>LOAForm</p>
-                        </div>
+                <>
+                        {totalCount?(
                             <div>
+                                {
+                                    myData?(
+                                        <Table columns={columns} dataSource={myData } className="text-center" />
+                                    ):(
+                                            <Table columns={columns} dataSource={ entities} className="text-center" />
+                                    ) 
+                                }
+                                {/* <Table columns={columns} dataSource={myData || entities} className="text-center" /> */}
+
+                                {/* BILL IMAGE     */}
                                 <Image
                                     width={200}
-                                    src={Details?.LastBill}
+                                    style={{ display: 'none' }}
+                                    src={myImage || '/no item.png'}
+                                    preview={{
+                                        visible: visible,
+                                        src: myImage,
+                                        onVisibleChange: value => {
+                                            setVisible("onchange==>", value);
+                                        },
+                                    }}
                                 />
-                                <p>LastBill</p>
-                            </div>
-                        </div>
 
-                       
-                        
-                        {/* <Button type="primary" style={button2style} className="mx-3"
+
+                                {/* //DetailsModel */}
+                                <Modal visible={DetailModel} onCancel={() => { setDetailModel(false); }} footer={[]} >
+                                    {/* Form Stated Here */}
+
+
+                                    <div className=" text-center">
+                                        <h5 >User Details</h5>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.User[0]?.FirstName} class="form-control" readonly />
+                                            <span>FirstName</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.User[0]?.LastName} class="form-control" readonly />
+                                            <span>LastName</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.User[0]?.BusinessName} class="form-control" readonly />
+                                            <span>Business Name</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value="Demo City" class="form-control" readonly />
+                                            <span>City</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.User[0]?.BusinessAddress} class="form-control" readonly />
+                                            <span>Office Address</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.User[0]?.ContactNumber} class="form-control" readonly />
+                                            <span>Phone Numer</span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.Utilities?.Title} class="form-control" readonly />
+                                            <span>UtilitityName </span>
+                                        </div>
+                                        <div class="inputbox form-group my-4">
+                                            <input type="text" required="required" value={Details?.Utilities?.Supplier} class="form-control" readonly />
+                                            <span>Supplier Name </span>
+                                        </div>
+
+                                        <div>
+
+                                            {/* images */}
+                                            <div class=' d-flex justify-content-between align-items-center '>
+                                                <div>
+                                                    
+                                                    <Image
+                                                        width={200}
+                                                        src={Details?.LOAForm}
+                                                    />
+                                                    <p>LOAForm</p>
+                                                </div>
+                                                <div>
+                                                    <Image
+                                                        width={200}
+                                                        src={Details?.LastBill}
+                                                    />
+                                                    <p>LastBill</p>
+                                                </div>
+                                            </div>
+
+
+
+                                            {/* <Button type="primary" style={button2style} className="mx-3"
                 onClick={() => {
                     setMyImage(Details?.LOAForm);
                     setVisible(true)
@@ -308,95 +305,104 @@ function ClientManagerTabel(props) {
                             }}>
                             View LastBill
                         </Button>    */}
-                    
-                    </div>
-                  
-                   
-                 
 
-                </div>
+                                        </div>
 
 
-                {/* Form Ended Here */}
-
-            </Modal>
-
-            {/* //Deal */}
-            <Modal visible={DealModel} onCancel={() => { setDealModel(false); }} footer={[]} >
-
-                {/* Form Stated Here */}
 
 
-                <div className=" text-center pt-3">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12  align-items-center justify-content-center">
+                                    </div>
 
 
-                            <div>
-                             <Divider>Accepted Deal</Divider>
-                                {
-                                        Details?.Deal ? (
-                                            <>
-                                                <h6>{Details?.Deal.Title || ''}</h6>
-                                                <p>{Details?.Deal.Description || ''}</p>
-                                            </>
-                                        ):(
-                                             <Tag color="red" >No Deal Accepted by user yet</Tag>
-                                            
-                                        )
-                                }
-                              
-                               
-                         </div>
-                             <Divider>All Deal</Divider>
-                                            {/* Supplier */}
-                                            {/* <div class="col-12 ">
+                                    {/* Form Ended Here */}
+
+                                </Modal>
+
+                                {/* //Deal */}
+                                <Modal visible={DealModel} onCancel={() => { setDealModel(false); }} footer={[]} >
+
+                                    {/* Form Stated Here */}
+
+
+                                    <div className=" text-center pt-3">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-12  align-items-center justify-content-center">
+
+
+                                                    <div>
+                                                        <Divider>Accepted Deal</Divider>
+                                                        {
+                                                            Details?.Deal ? (
+                                                                <>
+                                                                    <h6>{Details?.Deal.Title || ''}</h6>
+                                                                    <p>{Details?.Deal.Description || ''}</p>
+                                                                </>
+                                                            ) : (
+                                                                <Tag color="red" >No Deal Accepted by user yet</Tag>
+
+                                                            )
+                                                        }
+
+
+                                                    </div>
+                                                    <Divider>All Deal</Divider>
+                                                    {/* Supplier */}
+                                                    {/* <div class="col-12 ">
                                                 <div >
                                                     <Table class="text-center" columns={DealColumn} dataSource={Dealdata} />
                                                 </div> */}
-                                            {/* Accepted Deal */}
+                                                    {/* Accepted Deal */}
 
-                          {
-                               
-                                 dealsDeatils[0]?(
-                                       
-                                        <Table class="text-center" columns={Dealscolumns} dataSource={dealsDeatils} />
-                                
-                                 ):(
-                                <div className="mt-4 text-center">
-                                    <img src="/no item.png" width="200" height="200" />
-                                    <h6> No Deal sent yet </h6>
-                                </div>
-                                 )
-                             }  
+                                                    {
 
-                                <form onSubmit={handleSubmit(onSubmit)} >
+                                                        dealsDeatils[0] ? (
+
+                                                            <Table class="text-center" columns={Dealscolumns} dataSource={dealsDeatils} />
+
+                                                        ) : (
+                                                            <div className="mt-4 text-center">
+                                                                <img src="/no item.png" width="200" height="200" />
+                                                                <h6> No Deal sent yet </h6>
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    <form onSubmit={handleSubmit(onSubmit)} >
 
 
-                                    <div class="inputbox form-group mt-4">
-                                        <input type="text" required="required" class="form-control" {...register("Title", { required: true })} />
-                                        <span>Title</span>
+                                                        <div class="inputbox form-group mt-4">
+                                                            <input type="text" required="required" class="form-control" {...register("Title", { required: true })} />
+                                                            <span>Title</span>
+                                                        </div>
+                                                        <div class="inputbox form-group mt-4">
+                                                            <input type="text" required="required" class="form-control" {...register("Description", { required: true })} />
+                                                            <span>Description</span>
+                                                        </div>
+
+                                                        <input type="submit" style={button2style} value="Add new Deal" />
+                                                    </form>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="inputbox form-group mt-4">
-                                        <input type="text" required="required" class="form-control" {...register("Description", { required: true })} />
-                                        <span>Description</span>
-                                    </div>
-
-                                    <input type="submit" style={button2style} value="Add new Deal" />
-                                </form>
 
 
-                            </div>
-                        </div>
-                    </div>
+                                    {/* Form Ended Here */}
 
-                </div>
-
-
-                {/* Form Ended Here */}
-
-            </Modal> */}
+                                </Modal>
+               </div>
+            ):(
+               <div className="mt-4 text-center">
+                        <img src="/no item.png" width="200" height="200" />
+                        <h6> No Data Found </h6>
+               </div> 
+            )}
+            </>
+           )}
         </>
     );
 }

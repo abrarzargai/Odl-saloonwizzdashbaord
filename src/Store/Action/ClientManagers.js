@@ -8,6 +8,7 @@ export const fetchClientManagers = () => dispatch => {
   return requestFromServer
     .getAllClientManagers()
     .then(response => {
+      console.log(response)
       const entities  = response.data.Data;
       const totalCount = response.data.Data.length;
       dispatch(actions.clientManagersFetched({ totalCount, entities }));
@@ -18,44 +19,15 @@ export const fetchClientManagers = () => dispatch => {
     });
 };
 
-export const fetchClientManager = id => dispatch => {
-  if (!id) {
-    return dispatch(actions.clientManagerFetched({ clientManagerForEdit: undefined }));
-  }
 
+export const createClientManagerDeal = clientManagerForCreation => dispatch => {
   dispatch(actions.startCall({ callType: callTypes.action }));
   return requestFromServer
-    .getClientManagerById(id)
+    .createClientManagerDeal(clientManagerForCreation)
     .then(response => {
-      const clientManager = response.data;
-      dispatch(actions.clientManagerFetched({ clientManagerForEdit: clientManager }));
-    })
-    .catch(error => {
-      error.clientMessage = "Can't find clientManager";
-      dispatch(actions.catchError({ error, callType: callTypes.action }));
-    });
-};
-
-export const deleteClientManager = id => dispatch => {
-  dispatch(actions.startCall({ callType: callTypes.action }));
-  return requestFromServer
-    .deleteClientManager(id)
-    .then(response => {
-      dispatch(actions.clientManagerDeleted({ id }));
-    })
-    .catch(error => {
-      error.clientMessage = "Can't delete clientManager";
-      dispatch(actions.catchError({ error, callType: callTypes.action }));
-    });
-};
-
-export const createClientManager = clientManagerForCreation => dispatch => {
-  dispatch(actions.startCall({ callType: callTypes.action }));
-  return requestFromServer
-    .createClientManager(clientManagerForCreation)
-    .then(response => {
-      const { clientManager } = response.data;
-      dispatch(actions.clientManagerCreated({ clientManager }));
+      console.log(response)
+      const DealList = response.data.Data.DealList;
+      dispatch(actions.createClientManagerDeal({ DealList, data: clientManagerForCreation}));
     })
     .catch(error => {
       error.clientMessage = "Can't create clientManager";
@@ -63,38 +35,14 @@ export const createClientManager = clientManagerForCreation => dispatch => {
     });
 };
 
-export const updateClientManager = clientManager => dispatch => {
-  dispatch(actions.startCall({ callType: callTypes.action }));
-  return requestFromServer
-    .updateClientManager(clientManager)
-    .then(() => {
-      dispatch(actions.clientManagerUpdated({ clientManager }));
-    })
-    .catch(error => {
-      error.clientMessage = "Can't update clientManager";
-      dispatch(actions.catchError({ error, callType: callTypes.action }));
-    });
-};
 
-export const updateClientManagersStatus = (ids, status) => dispatch => {
+export const deleteClientManagerDeal = ids => dispatch => {
   dispatch(actions.startCall({ callType: callTypes.action }));
   return requestFromServer
-    .updateStatusForClientManagers(ids, status)
-    .then(() => {
-      dispatch(actions.clientManagersStatusUpdated({ ids, status }));
-    })
-    .catch(error => {
-      error.clientMessage = "Can't update clientManagers status";
-      dispatch(actions.catchError({ error, callType: callTypes.action }));
-    });
-};
-
-export const deleteClientManagers = ids => dispatch => {
-  dispatch(actions.startCall({ callType: callTypes.action }));
-  return requestFromServer
-    .deleteClientManagers(ids)
-    .then(() => {
-      dispatch(actions.clientManagersDeleted({ ids }));
+    .deleteClientManagerDeal(ids)
+    .then((res) => {
+      console.log("res",res)
+      dispatch(actions.deleteClientManagerDeal(res.data.Data));
     })
     .catch(error => {
       error.clientMessage = "Can't delete clientManagers";

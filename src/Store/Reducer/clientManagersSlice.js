@@ -42,16 +42,32 @@ export const clientManagersSlice = createSlice({
     // findClientManagers
     clientManagersFetched: (state, action) => {
       const { totalCount, entities } = action.payload;
+      console.log(totalCount, entities)
       state.listLoading = false;
       state.error = null;
       state.entities = entities;
       state.totalCount = totalCount;
     },
     // createUtility
-    clientManagerCreated: (state, action) => {
+    createClientManagerDeal: (state, action) => {
+      console.log(action.payload)
       state.actionsLoading = false;
       state.error = null;
-      state.entities.push(action.payload.clientManager);
+      state.entities = state.entities.map(entity => {
+        if (entity._id === action.payload.data.Id) {
+          return{ 
+            DealList: action.payload.DealList,
+            ContractExpiryDate: entity.ContractExpiryDate,
+            User: entity.User,
+            _id: entity._id,
+            updatedAt: entity.updatedAt,
+            createdAt: entity.createdAt,
+            LOAForm: entity.LOAForm,
+            LastBill: entity.LastBill,
+          }
+        }
+        return entity;
+      });
     },
     // updateUtility
     clientManagerUpdated: (state, action) => {
@@ -71,12 +87,18 @@ export const clientManagersSlice = createSlice({
       state.entities = state.entities.filter(el => el.id !== action.payload.id);
     },
     // deleteClientManagers
-    clientManagersDeleted: (state, action) => {
+    deleteClientManagerDeal: (state, action) => {
+      const { _id } = action.payload;
+      console.log(_id)
       state.error = null;
       state.actionsLoading = false;
-      state.entities = state.entities.filter(
-        el => !action.payload.ids.includes(el.id)
-      );
+      state.entities = state.entities.map(entity => {
+        console.log(_id, _id === entity._id)
+        if (_id=== entity._id) {
+          entity.DealList = action.payload.DealList;
+        }
+        return entity;
+      });
     },
     // clientManagersUpdateState
     clientManagersStatusUpdated: (state, action) => {
