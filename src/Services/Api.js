@@ -28,6 +28,10 @@ const axiosAuth = Axios.create({
 export const UserApi = {
  
     UpdatePassword: async (data) => await axios.post("/api/user/updatepassword", data),
+    Update: async (data) => await axios.post("/api/user/update ", data),
+    AddLink: async (data) => await axios.post("/api/user/addlink ", data),
+    updatelink: async (data) => await axios.post("/api/user/updatelink ", data),
+    DeleteLink: async (data) => await axios.post("/api/user/Deletelink ", data),
 };
 
 
