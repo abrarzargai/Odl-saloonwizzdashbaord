@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { message, Button, Modal, Select, Image, Spin } from 'antd';
+import { message, Button, Modal, Select, Image, Spin,Divider } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import '../../Css/Forms.css'
 // import { useSelector, useDispatch } from "react-redux";
-import { DisplayUtilities } from "../../../Store/Action/Action";
 import { useForm } from "react-hook-form";
 import { DisplayUtilitiesApi } from "../../../Services/Api";
 import UtilitiesSub from '../SubComponents/UtilitiesSub';
@@ -61,9 +60,10 @@ function Utilities() {
                 </div>
             ) : (
                 <>
+                 <Divider style={{color: '#9e1068' }} > Utilities  </Divider>
                     <div class=" d-flex justify-content-between align-items-center px-3">
-
-                            <h2>   Utilities {totalCount}  </h2>
+            <h6></h6>
+                         
                         <div>
                             <button
                                     className='addButton'

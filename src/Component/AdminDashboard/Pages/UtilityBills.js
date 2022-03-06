@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { message, Button, Modal, Select, Image, DatePicker, Spin } from 'antd';
+import { message, Button, Modal, Select, Image, DatePicker, Spin ,Divider} from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import '../../Css/Forms.css'
 import dateFormat from 'dateformat';
 import FillingSub from '../SubComponents/FillingSub';
 import { DisplayUtilitiyBillApi } from "../../../Services/Api";
 import { useForm } from "react-hook-form";
+import moment from 'moment';
 // import { useSelector, useDispatch } from "react-redux";
 import * as actions from '../../../Store/Action/UtilityBills';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,7 @@ function UTILITYBILL() {
     const [DateVariable, setDateVariable] = useState(dateFormat(new Date(), "mmmm d, yyyy"));
     const [Timepicker, setTimepicker] = useState(false);
     const [image, setimage] = useState();
+    const [option, setoption] = useState('ALL');
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const { currentState } = useSelector(
         (state) => ({ currentState: state.UtilityBills }),
@@ -72,13 +74,16 @@ function UTILITYBILL() {
 
         setTimepicker(false)
         setDateVariable(dateFormat(date, "mmmm d, yyyy"))
+        setoption('Date')
+        console.log(DateVariable)
+        console.log(new Date(DateVariable))
             
 
     }
 
     return (
         <>
-
+    <Divider style={{color: '#9e1068' }} > Utilities Bills  </Divider>
             <div class=" d-flex justify-content-between align-items-center px-3">
 
                 <h4  >
@@ -86,7 +91,14 @@ function UTILITYBILL() {
                     <span onClick={() => {  setTimepicker(true); }} style={{ background:" #f0f2f5 "}}> {DateVariable} </span>
 
                     <DatePicker  open={Timepicker}  className="timepickerstyle text-danger invisible" allowClear={true} onChange={onChange} />
-
+                     <button
+                        className='addButton mb-2'
+                        style={{fontSize:'10px'}}
+                        onClick={() => { 
+                            setoption('ALL')
+                            message.info('All document Seleted') }}>
+                        All Documents
+                    </button>
                 </h4>
 
                 <div>
@@ -111,9 +123,20 @@ function UTILITYBILL() {
 
                                 entities.map((x) => {
                                     if (x.Type === 'UTILITYBILL') {
-                                        return (
-                                            <FillingSub name={x.Title} image={x.URL} />
-                                        )
+                                        if(option === 'ALL'){
+                                                return (
+                                            <FillingSub name={x.Title} image={x.URL} Date={x.Date} />
+                                            )
+                                        }else{
+                                            
+                                       
+                                            if(isSameDate(new Date(x.Date),new Date(DateVariable)) ){
+                                                       return (
+                                            <FillingSub name={x.Title} image={x.URL} Date={x.Date} />
+                                            )
+                                            }
+                                        }
+                                        
                                     }
                                 })
 
@@ -183,3 +206,11 @@ function UTILITYBILL() {
 
 export default UTILITYBILL;
 
+
+const isSameDate = (start_date, header_date) => {
+  const startDate = moment(start_date);
+  const headerDate = moment(header_date);
+    const match = startDate.isSame(headerDate, 'day');
+    console.log(match,match)
+  return match
+}

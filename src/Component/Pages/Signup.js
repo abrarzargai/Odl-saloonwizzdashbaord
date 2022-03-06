@@ -1,11 +1,11 @@
-import React , {useState} from 'react';
-import {Link} from 'react-router-dom'
-import {CircularProgress, Typography} from '@mui/material'
-import './style.css'
-import { useSelector , useDispatch } from 'react-redux'
-import { SignMeUp } from '../../Store/Action/AuthActions'
-import {useNavigate} from 'react-router-dom'
-
+import { CircularProgress, Typography } from '@mui/material';
+import { message, Spin } from 'antd';
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { SignMeUp } from '../../Store/Action/AuthActions';
+import './style.css';
 
 
 const init = {
@@ -20,6 +20,7 @@ const init = {
 }
 
 function Signup() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [userDetails, setUserDetails] = useState(init)
   const [ pass, setPass] = useState('')
   const navigate = useNavigate();
@@ -27,25 +28,30 @@ function Signup() {
     const {  isAuthFetching , authSuccess , errMsg  , authError} = useSelector(state => state.AuthReducer);
 
 
-    const handleData = async (e) => {
-      if (pass !== userDetails?.Password){
-        alert("Passwords Do Not Match")
-        e.preventDefault();
-      }else{
+  const handleData = async (data) => {
+    console.log(data);
+    if(data.ConfirmPassword == data.Password){
+      delete data.ConfirmPassword
+//e.preventDefault();
+  
         const sendData = async () => {
-            dispatch(SignMeUp({userDetails} , dispatch));
+          dispatch(SignMeUp({ ...data} , dispatch));
             if (authSuccess === true){
-              navigate('./Login')
+              navigate('/Login')
             }
-            e.preventDefault();
+          //  e.preventDefault();
         }
         sendData();
-        e.preventDefault();
-      }
+      //  e.preventDefault();
+    }else{
+      message.error('confirm Password not Match')
+    }
   }
+
 
     return (
         <>
+        
             <div className="container-fluid">
             <div className="row">
                 <div className="col left" >
@@ -60,64 +66,70 @@ function Signup() {
 
                     {
                             authSuccess  === true && (
+                      <div className='text-center'>
                                   <Typography  style={{color : 'green'}} >User Signed Up SuccessFully</Typography>
+                            </div>
                             )
                     }
 
-                    {
-                          isAuthFetching === true && (
-                              <CircularProgress style={{marginTop: '30px' , marginLeft : '150px' ,  }} size="5rem" />
-                          )
-                      }
+                    
 
                       {
                           authError === true && (
+                        <div className='text-center'>
                             <Typography  style={{color : 'red'}} >{errMsg}</Typography>
+                  </div>
                           )
                       }
 
-                    <form className="form1 shadow-lg p-3 mb-5 bg-body rounded "  >
+              <form className="form1 shadow-lg p-3 mb-5 bg-body rounded " onSubmit={handleSubmit(handleData)}  >
                       <div className="form-inline form-inline1">
                         <div className="mb-3 wd">
                           <label for="exampleInputEmail1" className="form-label">Fisrt name</label>
-                          <input type="text" name="FirstName" value={userDetails?.FirstName} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="John"/>
+                    <input type="text" name="FirstName"  {...register("FirstName", { required: true })}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="John"/>
                         </div>
                         <div className="mb-3 wd">
                           <label for="exampleInputEmail1" className="form-label">Last name</label>
-                          <input type="text" name="LastName" value={userDetails?.LastName} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="cena"/>
+                    <input type="text" name="LastName"  {...register("LastName", { required: true })} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="cena"/>
                         </div>
                       </div>
 
                         <div className="mb-3">
                           <label for="exampleInputEmail1" className="form-label">Email address</label>
-                          <input type="email" name="Email" value={userDetails?.Email} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Johncena@gmail.com"/>
+                  <input type="email" name="Email"   {...register("Email", { required: true })} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Johncena@gmail.com"/>
                         </div>
                         <div className="mb-3">
                           <label for="exampleInputPassword1" className="form-label">Password</label>
-                          <input type="password" name="Password" value={userDetails?.Password} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputPassword1" placeholder="********"/>
+                  <input type="password" name="Password"   {...register("Password", { required: true })} className="form-control" id="exampleInputPassword1" placeholder="********"/>
                         </div>
                         <div className="mb-3">
                           <label for="exampleInputPassword1" className="form-label">Confirm Password</label>
-                          <input type="password" name="pass" value={pass} onChange={(e) => setPass(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="********"/>
+                  <input type="password" name="pass"   {...register("ConfirmPassword", { required: true })}  className="form-control" id="exampleInputPassword1" placeholder="********"/>
                         </div>
                         <div className="mb-3">
                           <label for="exampleInputPassword1" className="form-label">Phone number</label>
-                          <input type="text" name="ContactNumber" value={userDetails?.ContactNumber} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputPassword1" placeholder="+0-123-456-7"/>
+                  <input type="text" name="ContactNumber"   {...register("ContactNumber", { required: true })}  className="form-control" id="exampleInputPassword1" placeholder="+0-123-456-7"/>
                         </div>
                       
                         <div className="mb-3">
                           <label for="exampleInputEmail1" className="form-label">Business name</label>
-                          <input type="text" name="BusinessName" value={userDetails?.BusinessName} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Salon wizz"/>
+                  <input type="text" name="BusinessName"   {...register("BusinessName", { required: true })}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Salon wizz"/>
                         </div>
                         <div className="mb-3">
                           <label for="exampleInputEmail1" className="form-label">Business address</label>
-                          <input type="text" name="BusinessAddress" value={userDetails?.BusinessAddress} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Office#234, Hareley street, london, UK"/>
+                  <input type="text" name="BusinessAddress"   {...register("BusinessAddress", { required: true })}  className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Office#234, Hareley street, london, UK"/>
                         </div>
                         <div className="mb-3">
                           <label for="exampleInputEmail1" className="form-label">Post Code</label>
-                          <input type="text" name="PostCode" value={userDetails?.PostCode} onChange={(e) => setUserDetails({...userDetails , [e.target.name] : e.target.value})} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="44000"/>
+                  <input type="text" name="PostCode"   {...register("PostCode", { required: true })} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="44000"/>
                         </div>
-                        <button type="submit" className="btn btn-primary btn2" onClick={handleData} >Submit</button>
+                {isAuthFetching ? (
+                  <div style={{ padding: '40px 0px', textAlign: 'center' }}>
+                    <Spin></Spin>
+                  </div>
+                ) : (
+                        <button type="submit" className="btn btn-primary btn2" >Submit</button>
+                )}
                         <br />
                         <br />
 
@@ -146,7 +158,7 @@ function Signup() {
           </div>
         </>
     );
+  
 }
-
 
 export default Signup;

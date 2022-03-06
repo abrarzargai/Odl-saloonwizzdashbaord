@@ -24,7 +24,7 @@ function Password() {
     return (
         <>
 
-         <Divider  > Update Password </Divider>
+         <Divider style={{color: '#9e1068' }} > Update Password </Divider>
                     <div className='container-fluid '>
                     <div className='row'>
                     <div className='col-6 mx-auto text-center '>

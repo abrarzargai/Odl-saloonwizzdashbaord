@@ -12,93 +12,19 @@ import './App.css'
 function App() {
   const location = useNavigate();
   const [isAdmin, setAdminLogin] = useState(false)
-    const {authSuccess} = useSelector(state => state.AuthReducer);
-  
-  //checking if admin logged in or not
-  useEffect(() => {
-    const checkAdmin = () => {
-      //let  user = []
-      const user = JSON.parse(localStorage.getItem('profile'))
-      console.log("user : ", user?.length)
-      if (user) {
-        setAdminLogin(true)
-      } else {
-        setAdminLogin(false)
-      }
-    }
-    checkAdmin();
-  }, [authSuccess])
+
+
   return (
     <>
-    {console.log("isAdmin : ", isAdmin)}
+     
         <Routes>
-
-          {
-              <Route exact path="/ClientDashboard/*" element={
-                isAdmin ? (
-                  <ClientDashboard/>
-                ) : (
-                  <Login/>
-                )
-              } />
-            }
-
-            {
-              <Route exact path="/" element={
-                isAdmin ? (
-                  <ClientDashboard/>
-                ) : (
-                  <Login/>
-                )
-              } />
-            }
-
-            {
-              <Route exact path="/*" element={
-                isAdmin ? (
-                  <ClientDashboard/>
-                ) : (
-                  <Login/>
-                )
-              } />
-            }
-
-            {
-              <Route exact path="/AdminDashboard/*" element={
-                isAdmin ? (
-                  <AdminDashboard/>
-                ) : (
-                  <Login/>
-                )
-              } />
-            }
-
-            {
-              <Route exact path="/signin" element={
-                isAdmin ? (
-                  <AdminDashboard/>
-                ) : (
-                  <Login/>
-                )
-              } />
-            }
-
-            {
-              <Route exact path="/login" element={
-                isAdmin ? (
-                  <AdminDashboard/>
-                ) : (
-                  <SignIn/>
-                )
-              } />
-            }
-
-
-          {/* <Route path="/ClientDashboard/*" element={<ClientDashboard />} />
-          <Route path="/AdminDashboard/*" element={<AdminDashboard />} /> */}
-          <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/login" element={<SignIn />} /> */}
-          {/* <Route path="/*" element={<Login />} /> */}
+         <Route  path="/" element={<Login />} />
+          <Route  path="/ClientDashboard/*" element={<ClientDashboard />} />
+          <Route  path="/AdminDashboard/*" element={<AdminDashboard />} /> 
+          <Route  path="/signup" element={<Signup />} />
+          <Route  path="/login" element={<SignIn />} />
+           <Route path="*" element={<Login />} />
+          
         </Routes>
     </>
   );

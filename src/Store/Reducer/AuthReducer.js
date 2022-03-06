@@ -8,9 +8,12 @@ const AuthSlice = createSlice({
         isAuthFetching: false,
         authSuccess: false,
         authError: false,
+        LoginSuccess: false,
+        LoginError: false,
         Role:'user',
         User:null,
         errMsg: '',
+        Login:false
     },
     reducers: {
         // changing state of isAuthFetching
@@ -19,16 +22,24 @@ const AuthSlice = createSlice({
             state.isAuthFetching = true;
         },
         // ading data
-        addData: (state, action) => {
+        signup: (state, action) => {
            
             state.isAuthFetching = false;
             state.authSuccess = true;
             state.authError = false;
            
         },
+        login: (state, action) => {
+            // state.LoginSuccess= true,
+            state.isAuthFetching = false;
+            state.authSuccess = true;
+            state.authError = false;
+            state.Login = true;
+
+        },
         // removing data
         removeUser: (state, action) => {
-           
+            state.Login = false;
             state.isAuthFetching = false;
             state.authSuccess = false;
             state.authError = false;
@@ -36,7 +47,7 @@ const AuthSlice = createSlice({
         },
         // in case authError occurs
         getAuthError: (state, action) => {
-            
+            // state.LoginError= 'invalid Credentials',
             state.authSuccess = false;
             state.isAuthFetching = false;
             state.authError = true;
@@ -49,6 +60,8 @@ export const {
     addData,
     getAuthStart,
     getAuthError,
+    login,
+    signup,
     removeUser
 } = AuthSlice.actions;
 export default AuthSlice.reducer;

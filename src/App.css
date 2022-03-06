@@ -65,3 +65,22 @@ background: linear-gradient(to right, #AC5288, #3F1254) !important;
     margin-left: 8px;
     margin-bottom: 15px;
 }
+
+
+.linkTag {
+
+    /* width: 100%; */
+    font-size: 16px;
+    background:none;
+/* background: linear-gradient(to right, #AC5288, #3F1254) !important; */
+color: #9e1068 !important;
+
+
+}
+.ant-tooltip-inner {
+    color: white;
+    background: linear-gradient(to right, #AC5288, #3F1254) !important;
+     opacity: 0.9;
+     box-shadow: 0 3px 5px 1px rgb(138, 138, 138) !important;
+}   
+

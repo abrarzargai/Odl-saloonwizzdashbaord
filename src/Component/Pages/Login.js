@@ -1,8 +1,10 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route ,Link} from "react-router-dom";
-export default function signin() {
-    return (
-        <>
+import { Link } from 'react-router-dom'
+
+function Login() {
+  return (
+     <>
+        
             <div className="container-fluid">
                 <div className="row">
                     <div className="col left" >
@@ -58,5 +60,7 @@ export default function signin() {
 
 
         </>
-    )
+  )
 }
+
+export default Login

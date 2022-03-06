@@ -70,7 +70,8 @@ function Calender() {
     return (
         <>
 
-         <Divider  > Calender </Divider>
+      
+           <Divider style={{color: '#9e1068' }} > Calender </Divider>
             <div class=" d-flex justify-content-between align-items-center px-3 mb-4">
 
                 <h2>   </h2>

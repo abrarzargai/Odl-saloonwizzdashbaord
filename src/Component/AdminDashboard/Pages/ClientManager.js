@@ -1,4 +1,4 @@
-import { Button, message, Spin } from 'antd';
+import { Button, message, Spin,Divider } from 'antd';
 import { useEffect, useState } from 'react';
 import { DisplayUtilitiesApi } from "../../../Services/Api";
 import ClientManagerTabel from '../SubComponents/ClientManagerTabel';
@@ -45,7 +45,7 @@ function ClientManager() {
 
     return (
         <>
-        
+         <Divider style={{color: '#9e1068' }} > Client Manager  </Divider>
            <div className="mb-4">
                
                 <button type="primary" className='addButton mx-3'

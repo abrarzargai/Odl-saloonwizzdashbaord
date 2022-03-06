@@ -35,7 +35,8 @@ function DigitalAssistance() {
 
     return (
         <>
-            <Divider orientation="left" >All Messages {totalCount}</Divider>
+            <Divider orientation="left" style={{color: '#9e1068' }}>All Messages {totalCount}</Divider>
+            
             {listLoading ? (
                 <div class="text-center">
                     <Spin></Spin>

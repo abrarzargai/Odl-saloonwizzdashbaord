@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-    addData, getAuthError, getAuthStart, removeUser
+    addData, getAuthError, getAuthStart, removeUser, signup, login
 } from '../Reducer/AuthReducer';
 
 
@@ -10,12 +10,13 @@ import {
 export const SignMeUp = (data) => async (dispatch) => {
      dispatch(getAuthStart())
      try {
+         console.log(data)
         //const { data?.userDetails } = await getProducts();
 
-         await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/user/signup', data?.userDetails)
+         await axios.post('https://odl-saloonwizz-app.herokuapp.com/api/user/signup', data)
             .then(function (response) {
                 console.log("got respnse in posted : ", response);
-                dispatch(addData(response.data))
+                dispatch(signup())
             })
             .catch(function (error) {
                 console.log("Sorry error : ", error);
@@ -40,7 +41,7 @@ export const SignMeIn = (myData) => async (dispatch) => {
             .then(function (response) {
                 console.log("got respnse in posted in sign in : ", response);
                 localStorage.setItem("profile", JSON.stringify(response?.data?.User[0]));
-                dispatch(addData())
+                dispatch(login())
             })
             .catch(function (error) {
                 console.log("Sorry error : ", error);

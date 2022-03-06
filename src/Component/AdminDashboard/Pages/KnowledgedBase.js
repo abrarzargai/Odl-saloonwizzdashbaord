@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { message, Button, Modal, Select, Image, DatePicker, Space } from 'antd';
+import { message, Button, Modal, Select, Image, DatePicker, Space ,Divider} from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { RightOutlined } from '@ant-design/icons';
@@ -28,11 +28,12 @@ function KnowledgedBase() {
 
     return (
         <>  
+         <Divider style={{color: '#9e1068' }} > Knowledged Base  </Divider>
             <div class=" d-flex justify-content-between align-items-center px-3 mb-3">
-
+    
                 <h4  >
 
-                    Knowledged Base
+                   
                 </h4>
 
                 <div>

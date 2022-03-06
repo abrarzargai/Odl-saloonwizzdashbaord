@@ -1,36 +1,61 @@
-import React , {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector , useDispatch } from 'react-redux'
 import { SignMeIn } from '../../Store/Action/AuthActions'
 import {useNavigate} from 'react-router-dom'
 import { Typography} from '@mui/material'
 import { Button, message, Spin } from 'antd';
-
+import { useForm } from "react-hook-form";
 const init = {
-    FirstName: '',
+    Email: '',
     Password: ''
 }
 export default function () {
+
+   const { register, handleSubmit, watch, formState: { errors } } = useForm();
      const [userDetails, setUserDetails] = useState(init)
+     const [loader, setloader] = useState(true)
      const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {  isAuthFetching , authSuccess  , errMsg ,  authError} = useSelector(state => state.AuthReducer);
-
+  const { isAuthFetching, LoginSuccess, Login, errMsg, LoginError
+} = useSelector(state => state.AuthReducer);
+  const response = JSON.parse(localStorage.getItem('profile'))
+     useEffect(() => {
+        const response = JSON.parse(localStorage.getItem('profile'))
+        console.log(response)
+        if (response){
+            navigate('/admindashboard')
+        }
+        setloader(false)
+    }, [])
     const handleData = async (e) => {
+    
+      if (userDetails.Email == '' || userDetails.Email == null ){
+          message.error('Must Enter Email')
+        e.preventDefault()
+      }
+      if (userDetails.Password == '' || userDetails.Password == null) {
+        message.error('Must Enter Password')
+        e.preventDefault()
+      }
+      else{
+      console.log(userDetails)
         const sendData = async () => {
             dispatch(SignMeIn({userDetails} , dispatch));
             e.preventDefault()
-            if (authSuccess === true){
+          if (Login === true){
               navigate('/')
             }
         }
           sendData();
-          
+      }
   }
 
   return (
     <>
-    
+    {Login || response ?(
+        navigate('/admindashboard')
+    ):(
     <div className="container-fluid">
         <div className="row">
             <div className="col left" >
@@ -44,14 +69,18 @@ export default function () {
                   <br/>  <br/>
 
                     {
-                            authSuccess  === true && (
-                                  <Typography  style={{color : 'green'}} >User Signed In SuccessFully</Typography>
+              LoginSuccess  === true && (
+                              <div className='text-center'>
+                              <Typography style={{ color: 'green', textAlign: 'center'}} >User Signed In SuccessFully</Typography>
+                              </div>
                             )
                     }
 
                       {
-                          authError === true && (
+                          LoginError === true && (
+                                <div className='text-center'>
                               <Typography  style={{color : 'red' , textAlign :'center'}} >{errMsg}</Typography>
+                             </div>
                           )
                       }
 
@@ -71,7 +100,7 @@ export default function () {
                   <Spin></Spin>
                 </div>
               ):(
-              <button type="submit" className="btn btn-primary btn2" onClick={handleData} >Login</button>
+              <button className="btn btn-primary btn2" onClick={handleData} >Login</button>
               )}
               <br />
               <br />
@@ -104,9 +133,11 @@ export default function () {
     
     
     
-    
+    )
+}
     
     </>
 
   )
+  
 }

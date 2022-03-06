@@ -2,7 +2,6 @@ import { createStore, combineReducers, applyMiddleware } from "redux"
 import thunkMiddleware from "redux-thunk"
 //imports
 
-import Utilities from "./Reducer/Utilities"
 import AuthReducer from './Reducer/AuthReducer'
 import { utilitiesSlice } from "./Reducer/utilitiesSlice";
 import { calendersSlice } from "./Reducer/calendersSlice";
@@ -13,7 +12,6 @@ import { knowledgedBasesSlice } from "./Reducer/knowledgedBasesSlice";
 import { digitalAssistancesSlice } from "./Reducer/digitalAssistancesSlice";
 
 const rootReducers = combineReducers({
-    Utilities: Utilities,
     Utilities: utilitiesSlice.reducer,
     Calenders: calendersSlice.reducer,
     MarketingServices: marketingServicesSlice.reducer,

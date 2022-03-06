@@ -50,9 +50,11 @@ function Utilities() {
                 </div>
             ) : (
                 <>
+                 <Divider style={{color: '#9e1068' }} > Marketing Service </Divider>
                     <div class=" d-flex justify-content-between align-items-center px-3 mb-4">
 
-                            <h2 style={{ color: '#9e1068' }} >   Marketing Services  </h2>
+                            <h2 style={{ color: '#9e1068' }} >   
+                             </h2>
                         <div>
                             <button
                             

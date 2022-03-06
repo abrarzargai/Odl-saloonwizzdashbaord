@@ -12,10 +12,9 @@ export const fetchUtilityBills = (Email) => dispatch => {
      let data = response.data.Data;
       let Temp = [];
       data.map((x) => {
-        if (x.Type === "UTILITYBILL") {
-          console.log("x", x)
+       
           Temp.push(x)
-        }
+        
       })
       let totalCount = Temp.length
       let entities = Temp
