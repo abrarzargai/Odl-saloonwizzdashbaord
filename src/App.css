@@ -1,3 +1,7 @@
+.app{
+    
+    margin-top: -20px
+}
 .backgroundClass{
 background: linear-gradient(to right, #AC5288, #3F1254) !important;
 }
