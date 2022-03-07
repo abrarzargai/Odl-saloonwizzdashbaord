@@ -14,13 +14,13 @@ function DigitalAssistance() {
         (state) => ({ currentState: state.DigitalAssistances }),
         shallowEqual
     );
-    const { totalCount, entities, listLoading } = currentState;
+    const { totalCount, entities, listLoading,User } = currentState;
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(actions.fetchDigitalAssistances());
-        // ApiCall();
-        // setloading(false)
+        console.log("User===>",User)
+       
     }, [])
 
 

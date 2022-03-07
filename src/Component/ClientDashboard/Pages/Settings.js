@@ -1,103 +1,231 @@
-import React from 'react';
-import { Avatar, Menu, Dropdown } from 'antd';
-import {
-    EllipsisOutlined
-} from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { Avatar, Menu, message, Modal, Spin, Tag, Divider,Space,Tooltip} from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { useForm } from "react-hook-form";
+import Axios from "axios";
+import { UserApi } from "../../../Services/Api";
 
 function Settings() {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [User, SetUser] = useState(null);
+    const [Profile, SetProfile] = useState(null);
+   const [linkModel, SetlinkModel] = useState(false);
+    const [loading, Setloading] = useState(true);
+    const [Title, SetTitle] = useState(null);
+    const [URL, SetURL] = useState(null);
+
+    const ApiCall = async () => {
+        const response = JSON.parse(localStorage.getItem('profile'))
+        console.log("response", response)
+        SetUser(response)
+        SetProfile(response)
+    }
+
+    useEffect(() => {
+        ApiCall();
+
+    }, [])
+
+    async function UpdateHandler(data) {
+        console.log(User.Email, data)
+        try {
+            const response = await UserApi.Update({ Email: User.Email, ...data })
+            console.log("update api:", response)
+
+            const UserTemp = Object.assign({ ...Profile, ...data })
+            localStorage.setItem('profile', JSON.stringify(UserTemp))
+            console.log(UserTemp)
+            SetUser(UserTemp)
+            message.info("profile updated")
+        } catch (error) {
+            console.log(error)
+            message.error("server down")
+        }
+    }
+
+    const AddLinkHandler =async () => {
+        console.log(User.Email, URL, Title)
+        if (!URL) { message.error('must enter URL of a link') }
+        if (!Title) { message.error('must enter Title of a link') }
+        if (URL && Title) {
+            try {
+                const response = await UserApi.AddLink({
+                    Email: User.Email, Title: Title,
+                    URL: URL })
+                console.log(response)
+                console.log(response.data.Data)
+                localStorage.setItem('profile', JSON.stringify(response.data.Data))
+               
+                SetUser(response.data.Data)
+                message.info("New social Media Link Added")
+                SetlinkModel(false)
+            } catch (error) {
+                message.error("Link with this Title already added")
+                console.log(error)
+            }
+        }
+    }
+
+    const Delete = async (data) => {
+        console.log(User.Email, data)
+      
+            try {
+                const response = await UserApi.DeleteLink({
+                    Email: User.Email, Title: data.Title })
+                console.log(response)
+                localStorage.setItem('profile', JSON.stringify(response.data.Data))
+               
+                SetUser(response.data.Data)
+                message.info(" social Media Link Deleted")
+                SetlinkModel(false)
+            } catch (error) {
+                message.error("SERVER DOWN")
+                console.log(error)
+            }
+        
+    }
+
     return (
+
         <>
-            
-            <div className="container-fluid">
-                <div className="row"> 
-                    <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
-                        <h3 className="text-center">Personal</h3>
-                        <div className="bg-light py-4 mb-1 px-3 d-flex align-items-center justify-content-center" >
-                            <Avatar size={100} src="https://joeschmoe.io/api/v1/fr" />
-                            <h6 >
-                                <p className="pt-5">Update Avatar</p>
-                                <p style={{marginTop:"-15px"}}>or Import from Facebook or Instagram</p>
-                            </h6>
-                            <Dropdown overlay={dropdownmenu} className='text-dark' >
-                                <a className="ant-dropdown-link " onClick={e => e.preventDefault()}>
-                                    <EllipsisOutlined style={{ fontSize: '26px',color:"gray", marginLeft:"10px" }} 
-                                    className="mt-5 ml-2"/>
-                                </a>
-                            </Dropdown>
+            {User || Profile ? (
+                <>
+                    <div className="container-fluid">
+                      <Divider style={{color: '#9e1068' }} > Setting </Divider>
+                        <div className="row">
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
+
+                                <div className="bg-light py-4 mb-1 px-3 d-flex align-items-center justify-content-center" >
+
+                                    <Avatar size={75} className="mx-4 backgroundClass text-white" >{User?.FirstName[0] || ''}</Avatar>
+
+
+                                </div>
+                                <form className=" pb-5 pt-2 px-3 bg-light ">
+                                    <Divider style={{color: '#9e1068' }} >Social Media Links</Divider>
+                                    {User.SocialMedia.length>0 ?  (
+                                        <>
+                                            {User.SocialMedia.map(entity => {
+                                                return(
+                                                    
+                                                      <div className='my-2'>
+                                                       <Tooltip placement="topLeft" title={entity.URL || ''}>
+                                                    <Tag style={{ width: '85%' }} className='px-3' color="magenta" >   
+                                                        <a href={`http://${entity.URL || ''}`} className='linkTag py-1' target='_blank' rel="noreferrer noopener" >{entity.Title.toUpperCase() || ''} </a>
+                                                        </Tag> 
+                                                         </Tooltip>
+                                                        <span size="large " className="text-danger linkTagDeleteButton align-items-center justify-content-center text-center" onClick={() => Delete(entity)}>
+                                                            <DeleteOutlined style={{ fontSize: "20px" }}  />
+                                                            <span>
+                                                            Delete
+                                                            </span>
+                                                        </span>
+                                                     
+                                                  </div>   
+                                                
+                                                )
+                                            })}
+                                        </>
+                                    ) : (
+
+                                        <p className='text-center'> No SocialMedia Link Added yet </p>
+                                    )
+
+                                    }
+
+
+
+
+                                </form>
+                                <div className='text-center bg-light pb-4'>
+                                    <button className='addButton' onClick={() => SetlinkModel(true)}> Add New Social Media Link</button>
+                                </div>
+                            </div>
+
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
+
+                                <form onSubmit={handleSubmit(UpdateHandler)} className="bg-light pb-5 px-3 pt-2 ">
+                                    <Divider color="magenta" style={{ color: '#9e1068' }}>Profile</Divider>
+                                    <div class="inputbox form-group my-4">
+                                        <input type="text" required="required" defaultValue={User?.FirstName || ''} {...register("FirstName", { required: true })} class="form-control" />
+                                        <span>FirstName</span>
+                                    </div>
+                                    <div class="inputbox form-group my-4">
+                                        <input type="text" required="required" defaultValue={User?.LastName || ''} {...register("LastName", { required: true })} class="form-control" />
+                                        <span>LastName</span>
+                                    </div>
+                                    <div class="inputbox form-group my-4">
+                                        <input type="text" required="required" defaultValue={User?.BusinessName || ''} {...register("BusinessName", { required: true })} class="form-control" />
+                                        <span>Business Name</span>
+                                    </div>
+                                    <div class="inputbox form-group my-4">
+                                        <input type="text" required="required" defaultValue={User?.BusinessAddress || ''} {...register("BusinessAddress", { required: true })} class="form-control" />
+                                        <span>Business Address</span>
+                                    </div>
+                                    <div class="inputbox form-group my-4">
+                                        <input type="text" required="required" defaultValue={User?.PostCode || ''} {...register("PostCode", { required: true })} class="form-control" />
+                                        <span>Post Code </span>
+                                    </div>
+
+
+                                    <div className='text-center'>
+                                        <input type="submit" className='addButton' value="Update" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Modal visible={linkModel} onCancel={() => { SetlinkModel(false); }}
+                        footer={[
+                            // <div div className='text-center' >
+                            //     <Button style={button2style} className="my-2" onClick={() => UploadHandler()}>  Add New Utility </Button>
+                            // </div>
+                        ]}
+                    >
+
+                        {/* Form Stated Here */}
+
+
+                        <div className=" text-center">
+                            <h5 >Add New Link</h5>
+                            <div class="container">
+                                <div class="row">
+
+                                    <div class="col-12 ">
+                                        <form >
+                                            <div class="inputbox form-group mt-4">
+                                                <input type="text" required class="form-control" onChange={e => SetTitle(e.target.value)} />
+                                                <span>Title</span>
+                                            </div>
+                                            {/* {errors?.Title?.type === "required" && <p className="text-danger">Must Enter Utility Title</p>} */}
+
+
+                                            <div class="inputbox form-group mt-4">
+                                                <input type="text" required class="form-control" onChange={e => SetURL(e.target.value)} />
+                                                <span>URL</span>
+                                            </div>
+                                            {/*    {errors?.Supplier?.type === "required" && <p className="text-danger">Must Enter Supplier Name</p>} */}
+
+                                            <input type="button" className='addButton' value="Add new Link" onClick={AddLinkHandler} />
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                        <form className="bg-light py-5 px-3 ">
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required"  value="first Name" class="form-control" readonly />
-                                <span>FirstName</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="last Name" class="form-control" readonly />
-                                <span>LastName</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="Date" required="required" value="2013-01-08" class="form-control" readonly />
-                                <span>Date Of Birth</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Business" class="form-control" readonly />
-                                <span>Business Name</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo City" class="form-control" readonly />
-                                <span>City</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Office Address" class="form-control" readonly />
-                                <span>Office Address</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Demo Supplier Name" class="form-control" readonly />
-                                <span>Supplier Name </span>
-                            </div>
 
-                        </form>
-                    </div>
 
-                    <div className="col-xl-6 col-lg-6 col-md-12 col-12 col-sm-12 col-xs-12 ">
-                        <h3 className="text-center">Contact</h3>
-                        
-                        <form className="bg-light py-5 px-3 ">
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="first Name" class="form-control" readonly />
-                                <span>Email Address</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="+1 987 654 321" class="form-control" readonly />
-                                <span>Phone</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Facebook/yourName" class="form-control" readonly />
-                                <span>Facebook</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Instagram/yourname" class="form-control" readonly />
-                                <span>Instagram</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Linkdin/YourName" class="form-control" readonly />
-                                <span>Linkdin</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <input type="text" required="required" value="Twitter/yourName" class="form-control" readonly />
-                                <span>Twitter</span>
-                            </div>
-                            <div class="inputbox form-group my-4">
-                                <button type="text" required="required" value="last Name" class="form-control"  >
-                                    Add New Link
-                                </button>
-                            </div>
-                            
+                        {/* Form Ended Here */}
 
-                        </form>
-                    </div>
+                    </Modal >
+                </>
+            ) : (
+                <div>
+                    <Spin></Spin>
                 </div>
-            </div>
+            )}
         </>
     );
 }
@@ -113,9 +241,10 @@ const dropdownmenu = (
         </Menu.Item>
         <Menu.Item>
             <a target="_blank" rel="noopener noreferrer" href="https://www.google.com">
-               FaceBook
+                FaceBook
             </a>
         </Menu.Item>
 
     </Menu>
 );
+

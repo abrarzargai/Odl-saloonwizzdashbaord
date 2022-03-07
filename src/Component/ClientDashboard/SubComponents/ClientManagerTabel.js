@@ -78,20 +78,13 @@ function ClientManagerTabel(props) {
             title: 'ClientName',
             dataIndex: 'User',
             width: '20%',
-            render: (item, record) =>{
-                if(!item){
-                    return (<h6 className="text-danger"> - </h6>)
-                }
-                else{ 
-                            return(
-                        <>
-                            <Avatar size={50} className="mr-4 backgroundClass text-white" >{item[0].FirstName[0]}</Avatar>
-                            <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
-                        </>
-                    )
-            }
+            render: (item, record) => (
+                <>
+                    <Avatar size={50} className="mr-4 backgroundClass text-white" >{item[0].FirstName[0]}</Avatar>
+                    <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
+                </>
+            ),
 
-            }
         },
         {
             title: 'Utility',
@@ -136,7 +129,7 @@ function ClientManagerTabel(props) {
             title: 'LastBillPaid',  
             dataIndex: 'IsPaid',
             key: "IsPaid",
-           
+            sorter: (a, b) => a.IsPaid - b.IsPaid,
             render: (t, r) => {
                 
                 if(t){
@@ -165,7 +158,7 @@ function ClientManagerTabel(props) {
             render: (text, index) => (
                 <input type="Button" className='addButton' value="View Deals"
                     onClick={() => {
-                        setDetails(index ||'')
+                        setDetails(index)
                         setDealDetails(index.DealList || [])
                         setDealModel(true)
                     }}
@@ -243,35 +236,35 @@ function ClientManagerTabel(props) {
                                     <div className=" text-center">
                                         <h5 >User Details</h5>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.User[0]?.FirstName || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.User[0]?.FirstName} class="form-control" readonly />
                                             <span>FirstName</span>
                                         </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.User[0]?.LastName || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.User[0]?.LastName} class="form-control" readonly />
                                             <span>LastName</span>
                                         </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.User[0]?.BusinessName || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.User[0]?.BusinessName} class="form-control" readonly />
                                             <span>Business Name</span>
                                         </div>
-                                        {/* <div class="inputbox form-group my-4">
+                                        <div class="inputbox form-group my-4">
                                             <input type="text" required="required" value="Demo City" class="form-control" readonly />
                                             <span>City</span>
-                                        </div> */}
+                                        </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.User[0]?.BusinessAddress || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.User[0]?.BusinessAddress} class="form-control" readonly />
                                             <span>Office Address</span>
                                         </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.User[0]?.ContactNumber || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.User[0]?.ContactNumber} class="form-control" readonly />
                                             <span>Phone Numer</span>
                                         </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.Utilities?.Title || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.Utilities?.Title} class="form-control" readonly />
                                             <span>UtilitityName </span>
                                         </div>
                                         <div class="inputbox form-group my-4">
-                                            <input type="text" required="required" value={Details?.Utilities?.Supplier || '-'} class="form-control" readonly />
+                                            <input type="text" required="required" value={Details?.Utilities?.Supplier} class="form-control" readonly />
                                             <span>Supplier Name </span>
                                         </div>
 
@@ -283,14 +276,14 @@ function ClientManagerTabel(props) {
                                                     
                                                     <Image
                                                         width={200}
-                                                        src={Details?.LOAForm || '-'}
+                                                        src={Details?.LOAForm}
                                                     />
                                                     <p>LOAForm</p>
                                                 </div>
                                                 <div>
                                                     <Image
                                                         width={200}
-                                                        src={Details?.LastBill || '-'}
+                                                        src={Details?.LastBill}
                                                     />
                                                     <p>LastBill</p>
                                                 </div>

@@ -41,7 +41,7 @@ export const SignMeIn = (myData) => async (dispatch) => {
             .then(function (response) {
                 console.log("got respnse in posted in sign in : ", response);
                 localStorage.setItem("profile", JSON.stringify(response?.data?.User[0]));
-                dispatch(login())
+                dispatch(login({User:response?.data?.User[0]}))
             })
             .catch(function (error) {
                 console.log("Sorry error : ", error);

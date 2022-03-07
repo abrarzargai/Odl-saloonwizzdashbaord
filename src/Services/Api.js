@@ -1,8 +1,8 @@
 import Axios from "axios";
 export const imagePath = "/uploads/";
 //config
- const URL = "https://odl-saloonwizz-app.herokuapp.com";
-// const URL = "http://localhost:8080";
+// const URL = "https://odl-saloonwizz-app.herokuapp.com";
+ const URL = "http://localhost:8080";
 
 const axios = Axios.create({
     baseURL: URL,
@@ -191,6 +191,17 @@ export const DigitalAssistanceApi = {
 
 
     },
+    Add: async (data) => {
+        try {
+            const Response = await axios.post("/api/DigitalAssistance/add", data)
+            return Response
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+
+    },
 
   
 
@@ -275,9 +286,9 @@ export const UsrServicePackageApi = {
     },
     Add: async (data) => {
         try {
-            const Response = await axios.post("/api/reminder/add", data)
+            const Response = await axios.post("/api/UserServices/add", data)
             console.log(Response)
-            return true
+            return Response
         } catch (error) {
             console.log("API Error :", error)
             return null
@@ -288,7 +299,18 @@ export const UsrServicePackageApi = {
     Update: async (data) => {
         try {
             const Response = await axios.post("/api/UserServices/update", data)
-            return true
+            return Response
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+
+    },
+    delete: async (data) => {
+        try {
+            const Response = await axios.post("/api/UserServices/delete", data)
+            return Response
         } catch (error) {
             console.log("API Error :", error)
             return null
@@ -297,4 +319,30 @@ export const UsrServicePackageApi = {
 
     },
 
+};
+
+export const UserutilitiesApi = {
+    GetByuser: async () => {
+        try {
+            const Response = await axios.post("/api/Userutilities/getOne")
+           
+            return Response
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+    },
+    Add: async (data) => {
+        try {
+            const Response = await axios.post("/api/Userutilities/add",data)
+
+            return Response
+        } catch (error) {
+            console.log("API Error :", error)
+            return null
+        }
+
+    },
+  
 };

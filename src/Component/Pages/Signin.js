@@ -14,20 +14,32 @@ export default function () {
 
    const { register, handleSubmit, watch, formState: { errors } } = useForm();
      const [userDetails, setUserDetails] = useState(init)
-     const [loader, setloader] = useState(true)
+     const [loader, setloader] = useState(true);
+     const [user, setuser] = useState(false);
+     const [admin, setadmin] = useState(false);
      const navigate = useNavigate();
     const dispatch = useDispatch();
-  const { isAuthFetching, LoginSuccess, Login, errMsg, LoginError
+
+  const { isAuthFetching, LoginSuccess, Login, errMsg, LoginError, User, adminRole, userRole
 } = useSelector(state => state.AuthReducer);
+
   const response = JSON.parse(localStorage.getItem('profile'))
      useEffect(() => {
         const response = JSON.parse(localStorage.getItem('profile'))
-        console.log(response)
-        if (response){
-            navigate('/admindashboard')
+       console.log('response', response)
+      if (response){
+       if (response.Role === 'admin' || response.Role === 'ADMIN') {
+         setadmin(true)
         }
-        setloader(false)
+       if (response.Role === 'user' || response.Role === 'USER') {
+        
+         setuser(true)
+       }
+      }
+       
     }, [])
+
+
     const handleData = async (e) => {
     
       if (userDetails.Email == '' || userDetails.Email == null ){
@@ -40,23 +52,36 @@ export default function () {
       }
       else{
       console.log(userDetails)
-        const sendData = async () => {
-            dispatch(SignMeIn({userDetails} , dispatch));
-            e.preventDefault()
-          if (Login === true){
-              navigate('/')
+        const sendData =  () => {
+         Promise.all(dispatch(SignMeIn({userDetails} , dispatch)))
+          console.log('User', User)
+          if (User) {
+            if (User.Role === 'admin' || User.Role === 'ADMIN') {
+              Promise.all(setadmin(true))
+              console.log('admin',admin)
             }
+            if (User.Role === 'user' || User.Role === 'USER') {
+
+              Promise.all(setuser(true));
+              console.log('user', user)
+            }
+          }
+
         }
           sendData();
       }
      
   }
 
+ 
   return (
+  
     <>
-    {Login || response ?(
-        navigate('/admindashboard')
-    ):(
+      {userRole ? (
+        navigate('/clientdashboard')
+      ) : adminRole ? (
+          navigate('/admindashboard')
+      ):(
     <div className="container-fluid">
         <div className="row">
             <div className="col left" >
@@ -129,16 +154,11 @@ export default function () {
 
             </div>
           </div>
-      </div>
-    
-    
-    
-    
-    )
-}
-    
+      </div>  
+        ) 
+        }
     </>
 
+
   )
-  
 }

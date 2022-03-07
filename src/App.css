@@ -87,4 +87,27 @@ color: #9e1068 !important;
      opacity: 0.9;
      box-shadow: 0 3px 5px 1px rgb(138, 138, 138) !important;
 }   
+/* 
+//whatsappbutton */
 
+.floatwhatsapp {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    /* background-color: #25d366; */
+background: linear-gradient(to right, #AC5288, #3F1254) !important;
+
+    color: #FFF;
+    border-radius: 50px;
+    /* border: #25d366 2PX solid; */
+    text-align: center;
+    font-size: 30px;
+    /* box-shadow: 2px 2px 3px #999; */
+    z-index: 100;
+}
+
+.my-floatwhatsapp {
+    margin-top: 14px;
+}

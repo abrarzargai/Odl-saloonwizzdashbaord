@@ -11,6 +11,8 @@ const AuthSlice = createSlice({
         LoginSuccess: false,
         LoginError: false,
         Role:'user',
+        userRole:false,
+        adminRole:false,
         User:null,
         errMsg: '',
         Login:false
@@ -30,7 +32,18 @@ const AuthSlice = createSlice({
            
         },
         login: (state, action) => {
-            // state.LoginSuccess= true,
+            console.log("slice===>",action.payload.User)
+            if (action.payload.User.Role === 'admin'){
+                state.userRole = false
+                state.adminRole = true
+                console.log("admin===>", action.payload.User.Role)
+            }
+            else{
+                state.userRole = true
+                state.adminRole = false
+                console.log("user===>", action.payload.User.Role)
+            }
+            state.User =  action.payload.User
             state.isAuthFetching = false;
             state.authSuccess = true;
             state.authError = false;

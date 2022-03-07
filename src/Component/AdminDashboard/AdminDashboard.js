@@ -15,6 +15,9 @@ function ClientDashboard() {
         if (!response){
             navigate('/login')
         }
+        if (response.Role === 'user') {
+            navigate('/clientdashboard')
+        }
     }, [])
     return (
         <>

@@ -12,8 +12,13 @@ import AccountingServices from '../../Pages/AccountingServices';
 import Reports from '../../Pages/Reports';
 import DigitalAssistance from '../../Pages/DigitalAssistance';
 import KnowledgedBase from '../../Pages/KnowledgedBase';
+import ClientManager from '../../Pages/ClientManager';
 import Settings from '../../Pages/Settings';
+import Calender from '../../Pages/Calender';
 import '../../Pages/Pages.css'
+import KnowledgedBaseFAQ from '../../SubComponents/KnowledgedBaseFAQ';
+import KnowledgedBaseArticles from '../../SubComponents/KnowledgedBaseArticles';
+import KnowledgedBaseTutorials from '../../SubComponents/KnowledgedBaseTutorials';
 const { Content } = Layout;
 
 
@@ -32,7 +37,13 @@ function MainContent() {
                 <Route path="/Reports" element={<Reports />} />
                 <Route path="/DigitalAssistance" element={<DigitalAssistance />} />
                 <Route path="/KnowledgedBase" element={<KnowledgedBase />} />
+                <Route path="/Calender" element={<Calender />} />
                 <Route path="/Settings" element={<Settings />} />
+                <Route path="/ClientManager" element={<ClientManager />} />
+                {/* KnowledgedBae */}
+                <Route path="/KnowledgedBase/faqs" element={<KnowledgedBaseFAQ />} />
+                <Route path="/KnowledgedBase/articles" element={<KnowledgedBaseArticles />} />
+                <Route path="/KnowledgedBase/tutorials" element={<KnowledgedBaseTutorials />} />
                 
             </Routes>
         </Content>
