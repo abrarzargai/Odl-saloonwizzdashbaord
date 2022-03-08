@@ -5,6 +5,7 @@ const initialUtilitiesState = {
   actionsLoading: false,
   totalCount: 0,
   entities: null,
+  userUtilities:null,
   utilityForEdit: undefined,
   lastError: null
 };
@@ -37,6 +38,13 @@ export const utilitiesSlice = createSlice({
     utilityFetched: (state, action) => {
       state.actionsLoading = false;
       state.utilityForEdit = action.payload.utilityForEdit;
+      state.error = null;
+    },
+     getOneUserUtilities: (state, action) => {
+       console.log("action payload",action.payload)
+      state.actionsLoading = false;
+       state.listLoading = false;
+       state.userUtilities = action.payload;
       state.error = null;
     },
     // findUtilities

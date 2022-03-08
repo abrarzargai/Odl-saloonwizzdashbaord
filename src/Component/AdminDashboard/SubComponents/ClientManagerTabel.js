@@ -79,14 +79,15 @@ function ClientManagerTabel(props) {
             dataIndex: 'User',
             width: '20%',
             render: (item, record) =>{
+                console.log('item', item[0].FirstName)
                 if(!item){
                     return (<h6 className="text-danger"> - </h6>)
                 }
                 else{ 
                             return(
                         <>
-                            <Avatar size={50} className="mr-4 backgroundClass text-white" >{item[0].FirstName[0]}</Avatar>
-                            <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
+                            <Avatar size={50} className="mr-4 backgroundClass text-white" >{ ' - ' }</Avatar>
+                            <span className="ml-5" style={{ marginLeft: '10px' }}> { ' -'}</span>
                         </>
                     )
             }
@@ -213,9 +214,11 @@ function ClientManagerTabel(props) {
                             <div>
                                 {
                                     myData?(
-                                        <Table columns={columns} dataSource={myData } className="text-center" />
+                                       
+                                         <Table columns={columns} dataSource={myData } className="text-center" />
                                     ):(
-                                            <Table columns={columns} dataSource={ entities} className="text-center" />
+                                        
+                                             <Table columns={columns} dataSource={ entities} className="text-center" />
                                     ) 
                                 }
                                 {/* <Table columns={columns} dataSource={myData || entities} className="text-center" /> */}

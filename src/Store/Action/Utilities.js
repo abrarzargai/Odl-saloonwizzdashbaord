@@ -19,6 +19,21 @@ export const fetchUtilities = () => dispatch => {
     });
 };
 
+//GET UTILITIES FOR ONE USER(ACTIVE,NOACTIVE,PENDING)
+export const getOneUserUtilities = (data) => dispatch => {
+  dispatch(actions.startCall({ callType: callTypes.list }));
+  return requestFromServer
+    .getoneuserutilities(data)
+    .then(response => {
+      const Data = response.data
+      console.log(response)
+      dispatch(actions.getOneUserUtilities(Data));
+    })
+    .catch(error => {
+      error.clientMessage = "Can't find utilities";
+      dispatch(actions.catchError({ error, callType: callTypes.list }));
+    });
+};
 export const fetchUtility = id => dispatch => {
   if (!id) {
     return dispatch(actions.utilityFetched({ utilityForEdit: undefined }));

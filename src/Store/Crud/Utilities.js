@@ -13,6 +13,10 @@ export function getAllUtilities() {
   return axios.get(`${UTILITIES_URL}/Utilities/getall`);
 }
 
+export function getoneuserutilities(data) {
+  return axios.post(`${UTILITIES_URL}/Userutilities/getOne`,data);
+}
+
 export function getUtilityById(customerId) {
   return axios.get(`${UTILITIES_URL}/${customerId}`);
 }
