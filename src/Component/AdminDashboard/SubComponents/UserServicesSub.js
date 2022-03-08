@@ -82,8 +82,8 @@ function ClientManagerTabel(props) {
             width: '20%',
             render: (item, record) => (
                 <>
-                    <Avatar size={54} className="mr-4 backgroundClass text-white ">{item[0].FirstName[0]}</Avatar>
-                    <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].FirstName}</span>
+                    <Avatar size={54} className="mr-4 backgroundClass text-white ">{item[0]?.FirstName[0] || '-'}</Avatar>
+                    <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0]?.FirstName || '-'}</span>
                 </>
             ),
 
@@ -93,7 +93,7 @@ function ClientManagerTabel(props) {
             dataIndex: 'User',
             render: (item, record) => (
                 <>
-                    <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0].ContactNumber}</span>
+                    <span className="ml-5" style={{ marginLeft: '10px' }}> {item[0]?.ContactNumber || ' -'}</span>
                 </>
             ),
         },
