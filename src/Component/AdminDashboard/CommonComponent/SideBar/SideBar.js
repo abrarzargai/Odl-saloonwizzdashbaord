@@ -1,39 +1,24 @@
-import React from 'react';
-import { Layout, Menu, message, Popconfirm, Modal, Button } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from "react";
-import './SideBarstyle.css'
-import {
-    SignMeOut
-} from '../../../../Store/Action/AuthActions'
+import { AppstoreOutlined, AreaChartOutlined, CalculatorOutlined, ContainerOutlined, DeploymentUnitOutlined, ExceptionOutlined, FormOutlined, LineChartOutlined, LogoutOutlined, SettingOutlined, ShopOutlined, ToolOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, message, Modal } from 'antd';
+import React, { useState } from 'react';
 import {
     useDispatch, useSelector
-} from 'react-redux'
-import './SideBarstyle.css'
-
+} from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import {
-    UserOutlined, DeploymentUnitOutlined, SettingOutlined, LogoutOutlined, AppstoreOutlined,
-    LineChartOutlined, ShopOutlined, CalculatorOutlined, ExceptionOutlined, KeyOutlined, IdcardOutlined,
-    FormOutlined, ContainerOutlined, ToolOutlined, AreaChartOutlined
-} from '@ant-design/icons';
+    SignMeOut
+} from '../../../../Store/Action/AuthActions';
+import './SideBarstyle.css';
+
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const mystyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    minHeight: "100vh",
-};
-const buttonstyle = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color:'white'
-};
 
 function SideBar() {
     const navigate = useNavigate()
     const {authSuccess} = useSelector(state => state.AuthReducer);
     const [LogoutModel, setLogoutModel] = useState(false);
     const dispatch = useDispatch();
-    const [theArray, setTheArray] = useState([]);
 
     
     const showModal = () => {
@@ -128,14 +113,14 @@ function SideBar() {
                         <Menu.Item key="7" icon={<ShopOutlined />}>
                             <Link to="/AdminDashboard/MarketingServices">Marketing Services</Link>
                         </Menu.Item>
-                        <Menu.Item key="8" icon={<LineChartOutlined />}>
+                        {/* <Menu.Item key="8" icon={<LineChartOutlined />}>
                             <Link to="/AdminDashboard/AccountingServices">Accounting Services</Link>
-                        </Menu.Item>
+                        </Menu.Item> */}
                     </SubMenu>
 
-                    <Menu.Item key="9" icon={<AreaChartOutlined />}>
+                    {/* <Menu.Item key="9" icon={<AreaChartOutlined />}>
                         <Link to="/AdminDashboard/Reports">Reports</Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
 
                     <Menu.Item key="10" icon={<UserOutlined />}>
                         <Link to="/AdminDashboard/DigitalAssistance">Digital Assistance</Link>

@@ -19,6 +19,7 @@ function FillingSub(props) {
                 
                 <div class="content text-white">
                     <h4 class=" text-light">{props.name}</h4>
+                    <h6 class=" text-light">{props.Date}</h6>
                 </div>
             </div>
         </>

@@ -1,4 +1,4 @@
-import { Button, message, Spin,Divider } from 'antd';
+import { Divider, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { DisplayUtilitiesApi } from "../../../Services/Api";
 import ClientManagerTabel from '../SubComponents/ClientManagerTabel';
@@ -7,14 +7,12 @@ function ClientManager() {
     const [visible, setVisible] = useState(false);
     const [Utilities, setUtilities] = useState("All");
     const [theArray, setTheArray] = useState([]);
-    const [theArrayCheck, setTheArrayCheck] = useState(true);
-    const [loading, setloading] = useState(true);
    
 
     useEffect(() => {
       
         UtilitiesFunction();
-        setloading(false)
+
     }, [])
 
     const UtilitiesFunction = async () => {
@@ -25,15 +23,15 @@ function ClientManager() {
             if (GETUtilitiesHandler) {
                 console.log("GETUtilitiesHandler", GETUtilitiesHandler)
                 let x =['All']
-                GETUtilitiesHandler.map((data)=>{
+                GETUtilitiesHandler.map((data)=>(
                     x.push(data.Title)
-                })
+                ))
                 setTheArray(x)
                 
             }
             else {
                 console.log("check")
-                setTheArrayCheck(false)
+               
             }
 
         } catch (error) {
@@ -64,7 +62,7 @@ function ClientManager() {
                         <div className="mb-4 mt-3 py-4 px-4 bg-white" style={stylebox}>
                             {
                                 theArray.map((x)=>{
-                                    if (Utilities == x){
+                                    if (Utilities === x){
                                     return(
                                         <button type="primary" className="mx-1 my-2 addButton"
                                             onClick={() =>{ setUtilities(`${x}`);

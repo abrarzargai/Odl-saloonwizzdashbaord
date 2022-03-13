@@ -62,16 +62,10 @@ function UTILITYBILL() {
             let img = event.target.files[0];
             setimage(img)
         }
-    };
-
-
-    function UploadHandler() {
-        setIsModalVisible(false);
-        message.success("Uploaded successfully")
     }
-
     function onChange(date, dateString) {
-
+        console.log(date)
+        console.log(dateString)
         setTimepicker(false)
         setDateVariable(dateFormat(date, "mmmm d, yyyy"))
         setoption('Date')
@@ -80,6 +74,17 @@ function UTILITYBILL() {
             
 
     }
+     
+
+        const isSameDate = (start_date, header_date) => {
+            console.log('start_date', start_date)
+            console.log('header_date', header_date)
+            const startDate = moment(start_date);
+            const headerDate = moment(header_date);
+            const match = startDate.isSame(headerDate, 'day');
+            console.log(match, match)
+            return match
+        }
 
     return (
         <>
@@ -202,15 +207,7 @@ function UTILITYBILL() {
             </Modal >
         </>
     );
-}
 
+            }
 export default UTILITYBILL;
 
-
-const isSameDate = (start_date, header_date) => {
-  const startDate = moment(start_date);
-  const headerDate = moment(header_date);
-    const match = startDate.isSame(headerDate, 'day');
-    console.log(match,match)
-  return match
-}

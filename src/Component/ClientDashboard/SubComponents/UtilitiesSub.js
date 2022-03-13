@@ -1,25 +1,24 @@
 import { Divider, message, Modal, Radio, Select } from 'antd';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import UrlImageDownloader from 'react-url-image-downloader';
-import { UserutilitiesApi } from '../../../Services/Api'
+import { UserutilitiesApi } from '../../../Services/Api';
 
 function UtilitiesSub(props) {
     console.log(props)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [LOAForm, setLOAForm] = useState(null);
     const [LastBill, setLastBill] = useState(null);
-    const [isPaid, setIsPaid] = useState('True');
+    const [isPaid, setIsPaid] = useState(true);
     const [Supplier,setSupplier] = useState(null);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
+    const { register, handleSubmit } = useForm();
     const { Option } = Select;
 
 
     var Data = []
     props.Supplier.map((x) => {
         Data.push({ SupplierName: x })
+        return x
     })
 
     const onSubmit = async (data) => {
@@ -27,7 +26,7 @@ function UtilitiesSub(props) {
         // dispatch(actions.AddSupplier({ Id: props.id, ...data }));
         const profile = JSON.parse(localStorage.getItem('profile'));
         console.log(profile)
-        if (!isPaid){  message.error('must select lastest bill paid Option'); }
+     
         if (!Supplier){  message.error('must select Supplier'); }
         if (isPaid && Supplier && LOAForm && LastBill ){
          
@@ -42,8 +41,11 @@ function UtilitiesSub(props) {
             formData.append('ContractExpiryDate', data.ExpirayData.toString())
             const Response = await UserutilitiesApi.Add(formData)
             console.log('Response', Response)
+            
             if (Response){
+                props.ApiCall()
                 message.success("Applied SuccessFully")
+                setIsModalVisible(false)
             }
         }
     }
@@ -72,12 +74,12 @@ function UtilitiesSub(props) {
  
     return (
         <>
-            <div class="col-sm-3 " >
+            <div class="col-sm-3 mt-4 " >
                 <div class="card py-4 shadow-lg mb-3 bg-white rounded">
                     <div class="card-body">
 
 
-                        <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
+                        <img class="card-img-top" src={props.image} alt="" style={{ height: '50px' }} />
                         <h5 class="card-title">{props.name}</h5>
                     </div>
                     
@@ -138,7 +140,7 @@ function UtilitiesSub(props) {
                                         </div>
 
                                         <div>
-                                            
+                                            <span className="text-left mr-3">LastBill Paid</span>
                                             <Radio.Group required onChange={isPaidHandler} value={isPaid}>
                                                 <Radio value={true}>True</Radio>
                                                 <Radio value={false}>False</Radio>
@@ -170,16 +172,6 @@ function UtilitiesSub(props) {
 export default UtilitiesSub;
 
 
-const button2style = {
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "10px 35px",
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
-const buttondeletestyle = {
-
-};
 
 
 

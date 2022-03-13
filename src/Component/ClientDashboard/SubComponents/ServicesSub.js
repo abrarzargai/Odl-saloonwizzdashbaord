@@ -1,21 +1,17 @@
-import { Divider, Modal, message } from 'antd';
-import { useState, useEffect } from 'react';
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { UsrServicePackageApi } from '../../../Services/Api'
-import * as actions from '../../../Store/Action/MarketingServices';
+import { Divider, message, Modal } from 'antd';
 import axios from "axios";
+import { useEffect, useState } from 'react';
+import { UsrServicePackageApi } from '../../../Services/Api';
 
 function ServicesSub(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [ThanksModel, setThanksModel] = useState(false);
     const [Activate, SetActivate] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
-    
+
     useEffect(() => {
         getData();
-    }, [])
+     })
+    // }, [])
 
 
 
@@ -33,9 +29,10 @@ function ServicesSub(props) {
                             SetActivate(true);
                         }
                     }
+                    return data
                 }))
                
-
+              
 
             })
             .catch(function (error) {
@@ -85,7 +82,7 @@ function ServicesSub(props) {
                         <p class="card-title" style={{ color: '#9e1068' }}> £{props.Amount} per {props.Duration} </p>
                         {
                             Activate?(<>
-                                <button className='addButton mt-2'> Activated </button>
+                                <button className='addButton mt-2'> Applied </button>
                             </>):(
                                 <></>
                             )

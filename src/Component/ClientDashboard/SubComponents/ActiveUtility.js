@@ -6,7 +6,7 @@ import UrlImageDownloader from 'react-url-image-downloader';
 import { UserutilitiesApi } from '../../../Services/Api'
 
 function ActiveUtility(props) {
-    console.log(props)
+   
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [DealModelVisible, setDealModelVisible] = useState(false);
     const [LOAForm, setLOAForm] = useState(null);
@@ -28,7 +28,7 @@ function ActiveUtility(props) {
         // dispatch(actions.AddSupplier({ Id: props.id, ...data }));
         const profile = JSON.parse(localStorage.getItem('profile'));
         console.log(profile)
-        if (!isPaid) { message.error('must select lastest bill paid Option'); }
+      
         if (!Supplier) { message.error('must select Supplier'); }
         if (isPaid && Supplier && LOAForm && LastBill) {
 
@@ -71,8 +71,18 @@ function ActiveUtility(props) {
         setIsPaid(e.target.value);
     };
 
-    const GetDeal = data => {
-        console.log('radio checked', data);
+    const GetDeal = async (data) => {
+        console.log('deal click', data, props.data.UserUtility._id);
+            const ApiResponse = await UserutilitiesApi.AcceptDeal({
+                Id: props.data.UserUtility._id,
+                Title: data.Title,
+                Description: data.Description    })
+        if (ApiResponse){
+            message.info("Deal Accepted")
+            setDealModelVisible(false);
+            props.ApiCall()
+
+        }
     };
 
     const Dealscolumns = [
@@ -100,17 +110,37 @@ function ActiveUtility(props) {
     return (
         <>
 
-            <div class="col-sm-3 " >
-                <div class="card py-4 shadow-lg mb-3 bg-white rounded">
+            <div class="col-sm-3 mt-4 " >
+                <div class="card py-4 mx-2 shadow-lg mb-3 bg-white rounded">
+                    {props.data.Missing.length?(
+                        <Badge  count={`${props.data.Missing.length || 0} Missing`}>
+                           
+                                <div class="card-body">
+                                    <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
+                                    <h5 class="card-title">{props.name}</h5>
+                                </div>
+                            
+                        </Badge>
+                    ):(
+                          
+                  <Badge style={{ backgroundColor: '#52c41a' }} count={`${props.data.UserUtility.DealList.length || 0} Deal`} >
+                                    <div class="card-body">
+                                        <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
+                                        <h5 class="card-title">{props.name}</h5>
+                                    </div>
+                                </Badge>
+                          
+                    )
 
-                    <Badge count={props.data.Missing.length || 0}>
-                        <Badge count={props.data.UserUtility.DealList.length || 0} >
+                    }
+                    {/* <Badge count={props.data.Missing.length || 0}>
+                        <Badge style={{ backgroundColor: '#52c41a' }} count={props.data.UserUtility.DealList.length || 0} >
                             <div class="card-body">
                                 <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
                                 <h5 class="card-title">{props.name}</h5>
                             </div>
                         </Badge>
-                    </Badge>
+                    </Badge> */}
                 </div>
                 {
                     props.data.Missing.length > 0 ? (
@@ -176,10 +206,10 @@ function ActiveUtility(props) {
                                         </div>
 
                                         <div>
-
+                                            <span>LastBill Paid</span>
                                             <Radio.Group required onChange={isPaidHandler} value={isPaid}>
-                                                <Radio value={true}>True</Radio>
-                                                <Radio value={false}>False</Radio>
+                                                <Radio value={true}>Yes</Radio>
+                                                <Radio value={false}>No</Radio>
                                             </Radio.Group>
 
                                         </div>
@@ -218,7 +248,8 @@ function ActiveUtility(props) {
                                     {
                                         props.data.UserUtility?.Deal ? (
                                             <>
-                                                <h6>{props.data.UserUtility?.Deal.Title || ''}</h6>
+                                                <Tag color="red" >{props.data.UserUtility?.Deal.Title || ''}</Tag>
+                                                {/* <h6>{props.data.UserUtility?.Deal.Title || ''}</h6> */}
                                                 <p>{props.data.UserUtility?.Deal.Description || ''}</p>
                                             </>
                                         ) : (

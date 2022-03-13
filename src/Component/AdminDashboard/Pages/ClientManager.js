@@ -7,14 +7,11 @@ function ClientManager() {
     const [visible, setVisible] = useState(false);
     const [Utilities, setUtilities] = useState("All");
     const [theArray, setTheArray] = useState([]);
-    const [theArrayCheck, setTheArrayCheck] = useState(true);
-    const [loading, setloading] = useState(true);
    
 
     useEffect(() => {
       
         UtilitiesFunction();
-        setloading(false)
     }, [])
 
     const UtilitiesFunction = async () => {
@@ -27,20 +24,22 @@ function ClientManager() {
                 let x =['All']
                 GETUtilitiesHandler.map((data)=>{
                     x.push(data.Title)
+                    return data
                 })
                 setTheArray(x)
-                
+              
             }
             else {
                 console.log("check")
-                setTheArrayCheck(false)
+             
             }
 
         } catch (error) {
             console.log("Server Error :", error)
             message.error("Server is Down")
+            
         }
-
+           
     }
 
     return (

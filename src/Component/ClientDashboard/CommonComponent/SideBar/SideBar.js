@@ -49,12 +49,13 @@ function SideBar() {
             if (authSuccess === false) {
                 message.success("Logout")
                 setLogoutModel(false);
-                 navigate('/login')
+                navigate('/signin')
                 
             }
         // }
         // getLogout();
     };
+
 
     const handleCancel = () => {
         setLogoutModel(false);

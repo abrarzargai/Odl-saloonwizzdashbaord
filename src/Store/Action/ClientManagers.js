@@ -8,9 +8,9 @@ export const fetchClientManagers = () => dispatch => {
   return requestFromServer
     .getAllClientManagers()
     .then(response => {
-      console.log(response)
-      const entities  = response.data.Data;
-      const totalCount = response.data.Data.length;
+      console.log("response==> ",response.data)
+      const entities  = response.data.Active;
+      const totalCount = response.data.Active.length;
       dispatch(actions.clientManagersFetched({ totalCount, entities }));
       
     })

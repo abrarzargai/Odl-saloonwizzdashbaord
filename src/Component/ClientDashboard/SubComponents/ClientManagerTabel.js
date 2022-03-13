@@ -1,10 +1,9 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Divider, Image, message, Modal, Space, Table, Tag, Spin } from 'antd';
-import axios from 'axios';
+import { Avatar, Divider, Image, Modal, Space, Spin, Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import * as actions from '../../../Store/Action/ClientManagers';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import * as actions from '../../../Store/Action/ClientManagers';
 
 function ClientManagerTabel(props) {
   
@@ -12,13 +11,8 @@ function ClientManagerTabel(props) {
     const [Details, setDetails] = useState();
     const [dealsDeatils, setDealDetails] = useState([]);
     const [DealModel, setDealModel] = useState(false);
-    const [isBill, setisBill] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, } = useForm();
     const [ myData , setMyData ] = useState(null)
-    const [ myImage , setMyImage ] = useState('')
-    const [ LOAFormimage , setLOAFormimage ] = useState('')
-    const [ Billimage , setbillimage ] = useState('./No item.png')
     const { currentState } = useSelector(
         (state) => ({ currentState: state.ClientManagers }),
         shallowEqual
@@ -26,25 +20,23 @@ function ClientManagerTabel(props) {
     const { totalCount, entities, listLoading } = currentState;
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         dispatch(actions.fetchClientManagers());
-    }, [])
-
-    useEffect(() => {
         let ArrayData = []
         if (props.Utilities === 'All') {
             setMyData(null)
         } else {
-            entities.map((X) => {
-                if (X.Utilities.Title == props.Utilities) {
+            entities.Active?.map((X) => {
+             
+                if (X.Utilities.Title === props.Utilities) {
                     console.log("else hit")
                     ArrayData.push(X)
                 }
+                return X
             })
             setMyData(ArrayData)
         }
-    }, [props.Utilities])
+    }, [dispatch, entities.Active, props.Utilities])
 
 
   
@@ -138,7 +130,7 @@ function ClientManagerTabel(props) {
                     return (<h6 className="text-danger">No</h6>)
                 }
             } ,
-            sorter: (a, b) => a.address.length - b.address.length,
+     
         },
         {
             title: 'Details',
@@ -208,24 +200,13 @@ function ClientManagerTabel(props) {
                                     myData?(
                                         <Table columns={columns} dataSource={myData } className="text-center" />
                                     ):(
-                                            <Table columns={columns} dataSource={ entities} className="text-center" />
+                                            <Table columns={columns} dataSource={ entities.Active} className="text-center" />
                                     ) 
                                 }
                                 {/* <Table columns={columns} dataSource={myData || entities} className="text-center" /> */}
 
-                                {/* BILL IMAGE     */}
-                                <Image
-                                    width={200}
-                                    style={{ display: 'none' }}
-                                    src={myImage || '/no item.png'}
-                                    preview={{
-                                        visible: visible,
-                                        src: myImage,
-                                        onVisibleChange: value => {
-                                            setVisible("onchange==>", value);
-                                        },
-                                    }}
-                                />
+                           
+                          
 
 
                                 {/* //DetailsModel */}
@@ -362,7 +343,7 @@ function ClientManagerTabel(props) {
 
                                                         ) : (
                                                             <div className="mt-4 text-center">
-                                                                <img src="/no item.png" width="200" height="200" />
+                                                                <img src="/no item.png" width="200" height="200"  alt=""/>
                                                                 <h6> No Deal sent yet </h6>
                                                             </div>
                                                         )
@@ -397,7 +378,7 @@ function ClientManagerTabel(props) {
                </div>
             ):(
                <div className="mt-4 text-center">
-                        <img src="/no item.png" width="200" height="200" />
+                        <img src="/no item.png" width="200" height="200" alt="" />
                         <h6> No Data Found </h6>
                </div> 
             )}

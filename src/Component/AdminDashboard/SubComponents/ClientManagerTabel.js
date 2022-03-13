@@ -1,11 +1,11 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Divider, Image, message, Modal, Space, Table, Tag, Spin } from 'antd';
+import { Avatar, Divider, Image, Badge, Modal, Space, Table, Tag, Spin } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import * as actions from '../../../Store/Action/ClientManagers';
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-
+import { SafetyOutlined  } from '@ant-design/icons';
 function ClientManagerTabel(props) {
   
     const [DetailModel, setDetailModel] = useState(false);
@@ -79,11 +79,16 @@ function ClientManagerTabel(props) {
             dataIndex: 'User',
             width: '20%',
             render: (item, record) =>{
-               
-                if(!item){
-                    return (<h6 className="text-danger"> - </h6>)
+             
+                if(item[0].FirstName == null){
+                    console.log('nullhere')
+                    return (<>
+                        <Avatar size={50} className="mr-4 backgroundClass text-white" >{' Unknown' }</Avatar>
+                        <span className="ml-5" style={{ marginLeft: '10px' }}> {'Unknown'}</span>
+                    </>)
                 }
                 else{ 
+                    console.log('else',item[0].FirstName)
                             return(
                         <>
                             <Avatar size={50} className="mr-4 backgroundClass text-white" >{item[0]?.FirstName[0] || ' - ' }</Avatar>
@@ -163,7 +168,22 @@ function ClientManagerTabel(props) {
         },
         {
             title: 'Deals',
-            render: (text, index) => (
+            render: (text, index) => {
+                console.log(index);
+                if (index?.Deal){
+                    return (
+                        <Badge className="site-badge-count-109 text-white" style={{ backgroundColor: '#52c41a' }} count={"Accepted"}>
+                        <input type="Button" className='addButton' value="View Deals"
+                            onClick={() => {
+                                setDetails(index || '')
+                                setDealDetails(index.DealList || [])
+                                setDealModel(true)
+                            }}
+                        />
+                         </Badge >
+                    )
+                }else{
+                return(
                 <input type="Button" className='addButton' value="View Deals"
                     onClick={() => {
                         setDetails(index ||'')
@@ -171,7 +191,9 @@ function ClientManagerTabel(props) {
                         setDealModel(true)
                     }}
                 />
-            ),
+            )
+                }
+        }
         },
 
 

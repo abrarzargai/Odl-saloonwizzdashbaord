@@ -64,8 +64,9 @@ export const createUtilityBill = utilityBillForCreation => dispatch => {
   return requestFromServer
     .createUtilityBill(utilityBillForCreation)
     .then(response => {
-      console.log(response.data.Data.Filling)
-      const data = response.data.Data.Filling;
+      console.log('response', response)
+      console.log(response.data.filingsave.Filling)
+      const data = response.data.filingsave.Filling;
       dispatch(actions.utilityBillCreated(data));
       message.info("Created")
     })

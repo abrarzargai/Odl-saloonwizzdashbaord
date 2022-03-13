@@ -1,25 +1,12 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Menu, message, Space, Table } from 'antd';
+import { Avatar, message, Space, Table } from 'antd';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { UsrServicePackageApi } from '../../../Services/Api';
 
-import { UsrServicePackageApi } from '../../../Services/Api'
 
 function ClientManagerTabel(props) {
-
-    const [DetailModel, setDetailModel] = useState(false);
-    const [Details, setDetails] = useState();
-    const [dealsDeatils, setDealDetails] = useState([]);
-    const [DealModel, setDealModel] = useState(false);
-    const [isBill, setisBill] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [myData, setMyData] = useState([])
-    const [Id, setId] = useState('')
-    const [LOAFormimage, setLOAFormimage] = useState('')
-    const [Billimage, setbillimage] = useState('./No item.png')
-
 
     useEffect(() => {
         getData();
@@ -29,15 +16,15 @@ function ClientManagerTabel(props) {
     const getData = async () => {
         await axios.get('https://odl-saloonwizz-app.herokuapp.com/api/UserServices/getall')
             .then(function (response) {
-                console.log("UserServicesSub Call:",response)
+
                 const User = JSON.parse(localStorage.getItem('profile'))
-                console.log('User', User)
-                    // setMyData(response?.data?.Data)
+
                     let temp = []
               Promise.all( response?.data?.Data.map((data)=>{
                     if (data.User[0]?.Email === User.Email){
                         temp.push(data)
                     }
+                    return data
               }))
                 setMyData(temp)
             
@@ -117,16 +104,16 @@ function ClientManagerTabel(props) {
                 }
             },
         },
-        {
-            title: 'Delete',
-            key: 'action',
-            render: (text, record) => (
-                <Space size="large " className="text-danger" onClick={() => Delete(record)}>
-                    <DeleteOutlined style={{ fontSize: "20px" }} />
-                    Delete
-                </Space>
-            ),
-        },
+        // {
+        //     title: 'Delete',
+        //     key: 'action',
+        //     render: (text, record) => (
+        //         <Space size="large " className="text-danger" onClick={() => Delete(record)}>
+        //             <DeleteOutlined style={{ fontSize: "20px" }} />
+        //             Delete
+        //         </Space>
+        //     ),
+        // },
     ];
 
 
@@ -138,7 +125,7 @@ function ClientManagerTabel(props) {
                 <Table columns={columns} dataSource={myData} className="text-center" />
             ) : (
                 <div className="mt-4 text-center">
-                    <img src="/no item.png" width="200" height="200" />
+                    <img src="/no item.png" width="200" height="200" alt="" />
                     <h6> No Data Found </h6>
                 </div>
             )}
@@ -150,18 +137,5 @@ function ClientManagerTabel(props) {
 export default ClientManagerTabel;
 
 
-
-
-
-
-const button2style = {
-    fontSize: '13px',
-    background: "linear-gradient(to right, rgb(216, 93, 185),rgb(126, 3, 109), rgb(51, 1, 44))",
-    color: 'white',
-    padding: "4px 20px",
-    borderRadius: '8px',
-    border: "none",
-    boxShadow: ' 0 3px 5px 1px rgb(138, 138, 138)',
-};
 
  

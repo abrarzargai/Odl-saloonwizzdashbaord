@@ -35,29 +35,10 @@ function Utilities() {
     const ApiCall = ()=>{
     const profile = JSON.parse(localStorage.getItem('profile'));
     console.log(profile)
-    dispatch(actions.getOneUserUtilities({ "User": profile._id }));
+    dispatch(actions.getOneUserUtilities({ "User": profile._id || ''}));
 }
 
-    const onSubmit = async (data) => {
-        if (!image) {
-            message.error("Must Upload Utility icon image")
-        }
-        else{
-        let formData = new FormData();
-        formData.append('image', image)
-        formData.append('Title', data.Title)
-        formData.append('Supplier', data.Supplier)
-            dispatch(actions.createUtility(formData));
-            setIsModalVisible(false); 
-}
-    }
 
-    const onImageChange = event => {
-        if (event.target.files && event.target.files[0]) {
-            let img = event.target.files[0];
-            setimage(img)
-        }
-    };
 
     return (
         <>
@@ -84,8 +65,17 @@ function Utilities() {
 
                                                     userUtilities.inaactive.map((x) => {
                                                         console.log('x', x)
+                                                        let object = {};
+                                                        console.log('v', object)
+                                                       if(x.Utilities){
+                                                        object = x.Utilities
+                                                       }
+                                                       else{
+                                                        object=x
+                                                       }
+                                                       console.log('object', object)
                                                         return (
-                                                            <UtilitiesSub id={x.Utilities._id} name={x.Utilities.Title} image={x.Utilities.image} Supplier={x.Utilities.Supplier} ApiCall={ApiCall} />
+                                                            <UtilitiesSub id={ object._id || ''} name={ object.Title || ''} image={object.image || ''} Supplier={ object.Supplier || ''} ApiCall={ApiCall} />
                                                         )
                                                     })
                                                 ) : (
@@ -106,12 +96,19 @@ function Utilities() {
                                         <div class="row bg-white">
                                             {
 
-                                                userUtilities ? (
+                                                userUtilities?.active?.length || userUtilities ? (
 
                                                     userUtilities.active.map((x) => {
                                                         console.log('x', x)
+                                                        let object = {};
+                                                        if(x.Utilities){
+                                                         object = x.Utilities
+                                                        }
+                                                        else{
+                                                         object=x
+                                                        }
                                                         return (
-                                                            <ActiveUtility data={x} id={x.Utilities._id} name={x.Utilities.Title} image={x.Utilities.image} Supplier={x.Utilities.Supplier} ApiCall={ApiCall} />
+                                                            <ActiveUtility data={x} id={object._id || ''} name={object.Title || ''} image={ object.image || ''} Supplier={ object.Supplier || ''} ApiCall={ApiCall} />
                                                         )
                                                     })
                                                 ) : (

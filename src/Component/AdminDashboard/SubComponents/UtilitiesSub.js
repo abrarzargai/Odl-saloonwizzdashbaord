@@ -64,6 +64,7 @@ const columns = [
                         
                         <img class="card-img-top" src={props.image} alt="Card image cap" style={{ height: '50px' }} />
                         <h5 class="card-title">{props.name}</h5>
+                        
                     </div>
                 </div>
             </div>
