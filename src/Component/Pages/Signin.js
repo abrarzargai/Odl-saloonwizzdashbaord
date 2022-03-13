@@ -7,6 +7,10 @@ import { Typography } from '@mui/material'
 import { Button, message, Spin, Modal } from 'antd';
 import { useForm } from "react-hook-form";
 import { UserApi } from '../../Services/Api';
+import { GoogleLogin } from 'react-google-login';
+import {
+  addData, getAuthError, getAuthStart, removeUser, signup, login, LoginErrorHandler
+} from '../../Store/Reducer/AuthReducer';
 const init = {
   Email: '',
   Password: ''
@@ -22,6 +26,32 @@ export default function () {
   const [admin, setadmin] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
+  const responseGoogle =async (response) => {
+    console.log(response);
+    try {
+      const User = await UserApi.Getoneuser({ Email: response.profileObj.email})
+      console.log("User", User)
+      
+      if(User.data.Data[0]){
+        console.log("User", User?.data?.Data[0])
+        localStorage.setItem("profile", JSON.stringify(User?.data?.Data[0]));
+        dispatch(login({ User: User?.data?.Data[0] }))
+        if (User?.data?.Data[0]?.Role) {
+          if (User?.data?.Data[0]?.Role === 'admin' || User?.data?.Data[0]?.Role === 'ADMIN') {
+            setadmin(true)
+          }
+          if (User?.data?.Data[0]?.Role === 'user' || User?.data?.Data[0]?.Role === 'USER') {
+
+            setuser(true)
+          }
+        }
+      }
+    } catch (error) {
+      message.error('User Not Registered Yet')
+    }
+  }
 
   const { isAuthFetching, LoginSuccess, Login, errMsg, LoginError, User, adminRole, userRole
   } = useSelector(state => state.AuthReducer);
@@ -158,9 +188,20 @@ export default function () {
                 <p className="align">Or sign in with</p>
 
                 <div className="align">
-                  <a className="btn btn-primary colord " href="#!" role="button"
+                  {/* <a className="btn btn-primary colord " href="#!" role="button"
+                  >  */}
+                        <GoogleLogin
+                        clientId="506589582667-94hb4t7qen5o2cr7jkdcqj10ilnv24vl.apps.googleusercontent.com"
+                          buttonText="Google"
+                          onSuccess={responseGoogle}
+                          onFailure={responseGoogle}
+                          cookiePolicy={'single_host_origin'}
+                        />
+                    {/* </a> */}
+                  {/* <a className="btn btn-primary colord " href="#!" role="button"
                   > <i className="fa-brands fa-google fa-xl	"></i>
-                    Google</a>
+                    Google
+                    </a> */}
                   <a className="btn btn-primary colorc" href="#!" role="button"
                   > <i className="fa-brands fa-facebook fa-xl	"></i>
                     Facebook</a>

@@ -125,8 +125,7 @@ function ClientManagerTabel(props) {
                 <Table columns={columns} dataSource={myData} className="text-center" />
             ) : (
                 <div className="mt-4 text-center">
-                    <img src="/no item.png" width="200" height="200" alt="" />
-                    <h6> No Data Found </h6>
+                   
                 </div>
             )}
 

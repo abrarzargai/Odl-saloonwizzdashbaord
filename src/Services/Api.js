@@ -33,7 +33,7 @@ export const UserApi = {
     updatelink: async (data) => await axios.post("/api/user/updatelink ", data),
     DeleteLink: async (data) => await axios.post("/api/user/Deletelink ", data),
     ResetPassword: async (data) => await axios.post("/api/user/resetpassword ", data),
-    
+    Getoneuser: async (data) => await axios.post("/api/user/Getoneuser", data),
 
 };
 

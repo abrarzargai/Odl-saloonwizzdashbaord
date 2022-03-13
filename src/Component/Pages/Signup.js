@@ -1,5 +1,6 @@
 import { CircularProgress, Typography } from '@mui/material';
 import { message, Spin } from 'antd';
+import { GoogleLogin } from 'react-google-login';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,7 +38,7 @@ function Signup() {
         const sendData = async () => {
           dispatch(SignMeUp({ ...data} , dispatch));
             if (authSuccess === true){
-              navigate('/Login')
+              navigate('/signin')
             }
           //  e.preventDefault();
         }
@@ -48,6 +49,20 @@ function Signup() {
     }
   }
 
+  const responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+    dispatch(SignMeUp({ 
+      Email: response.profileObj.email,
+      Base: "google",
+      FirstName: response.profileObj.givenName,
+      LastName: response.profileObj.familyName,
+    
+    }, dispatch));
+    if (authSuccess === true) {
+      navigate('/signin')
+    }
+  }
 
     return (
         <>
@@ -136,9 +151,18 @@ function Signup() {
                       <p  className="align">Or sign in with</p>
 
                       <div className="align">
-                        <a className="btn btn-primary colord "  href="#!" role="button"
+                  <GoogleLogin
+                    clientId="506589582667-94hb4t7qen5o2cr7jkdcqj10ilnv24vl.apps.googleusercontent.com"
+                    buttonText="Google"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                  />
+                        {/* <a className="btn btn-primary colord "  href="#!" role="button"
                       > <i className="fa-brands fa-google fa-xl	"></i>
-                      Google</a>
+                      Google
+                      
+                      </a> */}
                       <a className="btn btn-primary colorc"  href="#!" role="button"
                       > <i className="fa-brands fa-facebook fa-xl	"></i>
                       Facebook</a>
