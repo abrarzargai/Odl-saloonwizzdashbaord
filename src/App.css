@@ -162,3 +162,12 @@ background: linear-gradient(to right, #AC5288, #3F1254) !important;
   background: #141414;
   border-color: #141414;
 }
+
+.facebookloginbutton{
+  font-size: 12px;
+background : #3b5998;
+padding:10px 25px;
+margin-left: 10px;
+color:white;
+
+}

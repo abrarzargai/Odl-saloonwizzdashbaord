@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import FacebookLogin from 'react-facebook-login';
 import { useSelector, useDispatch } from 'react-redux'
 import { SignMeIn } from '../../Store/Action/AuthActions'
 import { useNavigate } from 'react-router-dom'
@@ -27,6 +28,30 @@ export default function () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const responseFacebook = async(response) => {
+    console.log(response);
+    try {
+      const User = await UserApi.Getoneuser({ Email: response.email })
+      console.log("User", User)
+
+      if (User.data.Data[0]) {
+        console.log("User", User?.data?.Data[0])
+        localStorage.setItem("profile", JSON.stringify(User?.data?.Data[0]));
+        dispatch(login({ User: User?.data?.Data[0] }))
+        if (User?.data?.Data[0]?.Role) {
+          if (User?.data?.Data[0]?.Role === 'admin' || User?.data?.Data[0]?.Role === 'ADMIN') {
+            setadmin(true)
+          }
+          if (User?.data?.Data[0]?.Role === 'user' || User?.data?.Data[0]?.Role === 'USER') {
+
+            setuser(true)
+          }
+        }
+      }
+    } catch (error) {
+      message.error('User Not Registered Yet')
+    }
+  }
 
   const responseGoogle =async (response) => {
     console.log(response);
@@ -128,6 +153,8 @@ export default function () {
 
   }
 
+  
+
   return (
 
     <>
@@ -202,9 +229,19 @@ export default function () {
                   > <i className="fa-brands fa-google fa-xl	"></i>
                     Google
                     </a> */}
-                  <a className="btn btn-primary colorc" href="#!" role="button"
+                      <FacebookLogin
+                        class="ml-2"
+                        appId="363147242343621"
+                        autoLoad={true}
+                        fields="name,email,picture"
+                        icon="fa-facebook"
+                        textButton="Facebook"
+                        size="small  "
+                        cssClass="facebookloginbutton"
+                        callback={responseFacebook} />
+                  {/* <a className="btn btn-primary colorc" href="#!" role="button"
                   > <i className="fa-brands fa-facebook fa-xl	"></i>
-                    Facebook</a>
+                    Facebook</a> */}
                   <br />
                   <br />
                   <a className="colora" onClick={() => setresetPassword(true)}><p>Forgot your password</p></a>

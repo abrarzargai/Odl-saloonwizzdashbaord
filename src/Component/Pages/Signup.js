@@ -1,6 +1,7 @@
 import { CircularProgress, Typography } from '@mui/material';
 import { message, Spin } from 'antd';
 import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,6 +58,20 @@ function Signup() {
       Base: "google",
       FirstName: response.profileObj.givenName,
       LastName: response.profileObj.familyName,
+    
+    }, dispatch));
+    if (authSuccess === true) {
+      navigate('/signin')
+    }
+  }
+
+  const responseFacebook = (response) => {
+    console.log(response.email);
+    console.log(response.name);
+      dispatch(SignMeUp({ 
+      Email: response.email,
+      Base: "facebook",
+        FirstName: response.name,
     
     }, dispatch));
     if (authSuccess === true) {
@@ -153,7 +168,7 @@ function Signup() {
                       <div className="align">
                   <GoogleLogin
                     clientId="506589582667-94hb4t7qen5o2cr7jkdcqj10ilnv24vl.apps.googleusercontent.com"
-                    buttonText="Google"
+                     buttonText="Google"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
                     cookiePolicy={'single_host_origin'}
@@ -163,9 +178,19 @@ function Signup() {
                       Google
                       
                       </a> */}
-                      <a className="btn btn-primary colorc"  href="#!" role="button"
+                  <FacebookLogin
+                  class="ml-2"
+                    appId="363147242343621"
+                    autoLoad={true}
+                    fields="name,email,picture"
+                   icon="fa-facebook"
+                    textButton="Facebook"
+                    size="small  "
+                    cssClass="facebookloginbutton"
+                    callback={responseFacebook} />
+                      {/* <a className="btn btn-primary colorc"  href="#!" role="button"
                       > <i className="fa-brands fa-facebook fa-xl	"></i>
-                      Facebook</a>
+                      Facebook</a> */}
                       <br />
                       <br />
                       <a href="#" className="colora" ><p>Forgot your password</p></a>
