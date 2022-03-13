@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Divider, message, Badge, Modal, Radio, Select, Table, Tag } from 'antd';
 import {
-    addData, getAuthError, getAuthStart, removeUser, signup, login
+    addData, getAuthError, getAuthStart, removeUser, signup, login, LoginErrorHandler
 } from '../Reducer/AuthReducer';
 
 
@@ -50,7 +50,7 @@ export const SignMeIn = (myData) => async (dispatch) => {
             .catch(function (error) {
                 message.error("Invalid Credentials")
                 console.log("Sorry error : ", error);
-                dispatch(getAuthError({message : "User Data is Invalid"}))
+                dispatch(LoginErrorHandler({message : "User Data is Invalid"}))
             });
 
             console.log("got data :", )

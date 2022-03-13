@@ -66,6 +66,11 @@ const AuthSlice = createSlice({
             state.authError = true;
             state.errMsg = action.payload.message;
         },
+        LoginErrorHandler: (state, action) => {
+            // state.LoginError= 'invalid Credentials',
+            state.LoginError = "invalid Credentials";
+            state.isAuthFetching = false;
+        },
     }
 });
 
@@ -75,6 +80,7 @@ export const {
     getAuthError,
     login,
     signup,
-    removeUser
+    removeUser,
+    LoginErrorHandler
 } = AuthSlice.actions;
 export default AuthSlice.reducer;
